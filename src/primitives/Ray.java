@@ -23,17 +23,11 @@ public class Ray {
         return _p0;
     }
 
-    public void set_p0(Point3D _p0) {
-        this._p0 = _p0;
-    }
-
     public Vector get_dir() {
         return _dir;
     }
 
-    public void set_dir(Vector _dir) {
-        this._dir = _dir;
-    }
+
 
     @Override
     public boolean equals(Object o) {

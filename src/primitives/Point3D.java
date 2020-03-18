@@ -31,24 +31,12 @@ public class Point3D {
         return _x;
     }
 
-    public void set_x(Coordinate _x) {
-        this._x = _x;
-    }
-
     public Coordinate get_y() {
         return _y;
     }
 
-    public void set_y(Coordinate _y) {
-        this._y = _y;
-    }
-
     public Coordinate get_z() {
         return _z;
-    }
-
-    public void set_z(Coordinate _z) {
-        this._z = _z;
     }
 
     @Override
@@ -65,19 +53,19 @@ public class Point3D {
 
     }
 
-    public Vector Subtract(Point3D _p){
+    public Vector subtract(Point3D _p){
         return new Vector(new Point3D(_p.get_x()._coord - this.get_x()._coord ,_p.get_y()._coord - this.get_y()._coord,_p.get_z()._coord - this.get_z()._coord));
     }
 
-    public Point3D Add(Vector _v){
+    public Point3D add(Vector _v){
         return new Point3D(this.get_x()._coord + _v.get_head().get_x()._coord, this.get_y()._coord + _v.get_head().get_y()._coord, this.get_z()._coord + _v.get_head().get_z()._coord);
     }
 
-    public double DistanceSquared(Point3D _p){
+    public double distanceSquared(Point3D _p){
         return ((_p.get_x()._coord - this.get_x()._coord)*(_p.get_x()._coord - this.get_x()._coord) + (_p.get_y()._coord - this.get_y()._coord)*(_p.get_y()._coord - this.get_y()._coord) + (_p.get_z()._coord - this.get_z()._coord)*(_p.get_z()._coord - this.get_z()._coord));
     }
 
-    public double Distance(Point3D _p){
-        return Math.sqrt(this.DistanceSquared(_p));
+    public double distance(Point3D _p){
+        return Math.sqrt(this.distanceSquared(_p));
     }
 }
