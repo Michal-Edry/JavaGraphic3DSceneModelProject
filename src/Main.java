@@ -1,6 +1,11 @@
 import primitives.*;
 import static java.lang.System.out;
 import static primitives.Util.*;
+/**
+ * exercise 1
+ * Name: Michal Edry ID: 210030565 Email: michaledry1@gmail.com
+ * Name: Liel Orenstein ID: 209220730 Email: lielorenstein10@gmail.com
+ */
 
 /**
  * Test program for the 1st stage
