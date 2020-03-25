@@ -41,7 +41,8 @@ public class Cylinder extends RadialGeometry {
      * @param _p 3D point
      * @return a normal
      */
-    public Vector getNormal(Point3D _p){
-        return null;
+    @Override
+    public Vector getNormal(Point3D _p) {
+       return null;
     }
 }

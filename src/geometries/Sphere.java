@@ -40,8 +40,12 @@ public class Sphere extends RadialGeometry {
      * @param _p 3D point
      * @return a normal
      */
-    public Vector getNormal(Point3D _p){
-        return null;
+    //get the normal to this sphere in a given point
+
+    @Override
+    public Vector getNormal(Point3D _p) {
+        Vector orthogonal = new Vector(_p.subtract(_center));
+        return orthogonal.normalized();
     }
 
 }

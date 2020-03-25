@@ -90,7 +90,7 @@ public class Vector {
      * @return a new vector
      */
     public Vector subtract(Vector _v) {
-        return new Vector(new Point3D(_v._head.get_x()._coord - this._head.get_x()._coord, _v._head.get_y()._coord - this._head.get_y()._coord, _v._head.get_z()._coord - this._head.get_z()._coord));
+        return new Vector(new Point3D(this._head.get_x()._coord - _v._head.get_x()._coord, this._head.get_y()._coord - _v._head.get_y()._coord, this._head.get_z()._coord - _v._head.get_z()._coord));
     }
 
     /**
