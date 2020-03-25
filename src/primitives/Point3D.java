@@ -10,7 +10,7 @@ public class Point3D {
     protected Coordinate _y;
     protected Coordinate _z;
 
-    public final static Point3D ZERO = new Point3D(new Coordinate(0.0),new Coordinate(0.0),new Coordinate(0.0));
+    public final static Point3D ZERO = new Point3D(0.0, 0.0, 0.0);
 
     /**
      * Constructor: gets 3 coordinates
@@ -19,9 +19,9 @@ public class Point3D {
      * @param _z coordinate z
      */
     public Point3D(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this._x = _x;
-        this._y = _y;
-        this._z = _z;
+        this._x = new Coordinate(_x);
+        this._y = new Coordinate(_y);
+        this._z = new Coordinate(_z);
     }
 
     /**
@@ -38,12 +38,12 @@ public class Point3D {
 
     /**
      * copy constructor: gets a point
-     * @param _p
+     * @param _p Point3D
      */
     public Point3D(Point3D _p) {
-        this._x = _p.get_x();
-        this._y = _p.get_y();
-        this._z = _p.get_z();
+        this._x = new Coordinate(_p.get_x());
+        this._y = new Coordinate(_p.get_y());
+        this._z = new Coordinate(_p.get_z());
     }
 
     /**

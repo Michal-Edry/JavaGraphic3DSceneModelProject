@@ -6,19 +6,28 @@ import java.util.Objects;
  * class of ray
  */
 public class Ray {
-   protected Point3D _p0;
-   protected Vector _dir;
+    protected Point3D _p0;
+    protected Vector _dir;
 
     /**
-     * constructor: gets a 3D piont and a vector
+     * constructor: gets a 3D point and a vector
      * @param _p0 3D point
-     * @param _dir vector
+     * @param _dir Vector
      */
     public Ray(Point3D _p0, Vector _dir) {
-        if (Math.sqrt((_dir.get_head().get_x()._coord - _p0.get_x()._coord)*(_dir.get_head().get_x()._coord - _p0.get_x()._coord) + (_dir.get_head().get_y()._coord - _p0.get_y()._coord)*(_dir.get_head().get_y()._coord - _p0.get_y()._coord) + (_dir.get_head().get_z()._coord - _p0.get_z()._coord)*(_dir.get_head().get_z()._coord - _p0.get_z()._coord)) == 1)
-            throw new IllegalArgumentException("Illegal input");
-        this._p0 = _p0;
-        this._dir = _dir;
+        if(_dir.length() != 1)
+            _dir.normalize();
+        this._p0 = new Point3D(_p0);
+        this._dir = new Vector( _dir);
+    }
+
+    /**
+     * copy constructor: gets a ray
+     * @param _ray Ray
+     */
+    public Ray(Ray _ray) {
+        this._p0 = new Point3D(_ray.get_p0());
+        this._dir = new Vector(_ray.get_dir());
     }
 
     /**

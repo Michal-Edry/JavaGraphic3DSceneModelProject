@@ -11,9 +11,10 @@ public class Vector {
     /**
      * constructor: gets a 3D point
      * @param _head 3D point
+     * @throws IllegalArgumentException
      */
     public Vector(Point3D _head) {
-        this._head = _head;
+        this._head = new Point3D(_head);
         if (_head.equals(Point3D.ZERO))
             throw new IllegalArgumentException("Illegal input");
     }
@@ -23,11 +24,12 @@ public class Vector {
      * @param _x coordinate x
      * @param _y coordinate y
      * @param _z coordinate z
+     * @throws IllegalArgumentException
      */
     public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this._head._x = _x;
-        this._head._y = _y;
-        this._head._z = _z;
+        this._head._x = new Coordinate(_x);
+        this._head._y = new Coordinate(_y);
+        this._head._z = new Coordinate(_z);
         if (_head.equals(Point3D.ZERO))
             throw new IllegalArgumentException("Illegal input");
     }
@@ -37,15 +39,12 @@ public class Vector {
      * @param _x double x
      * @param _y double y
      * @param _z double z
+     * @throws IllegalArgumentException
      */
     public Vector(double _x, double _y, double _z) {
-        try {
-            this._head = new Point3D(_x, _y, _z);
-            if (_head.equals(Point3D.ZERO))
-                throw new IllegalArgumentException("Illegal input");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
+        this._head = new Point3D(_x, _y, _z);
+        if (_head.equals(Point3D.ZERO))
+            throw new IllegalArgumentException("Illegal input");
     }
 
     /**
@@ -153,8 +152,8 @@ public class Vector {
      */
     public  Vector normalize()
     {
-        Vector _v=new Vector(new Point3D(this._head._x._coord/this.length(),this._head._y._coord/this.length(),this._head._z._coord/this.length()));
-        this._head=_v.get_head();
+        Vector _v = new Vector(new Point3D(this._head._x._coord/this.length(),this._head._y._coord/this.length(),this._head._z._coord/this.length()));
+        this._head = new Point3D(_v.get_head());
         return  this;
     }
 
