@@ -60,6 +60,7 @@ public class Ray {
         return _p0.equals(ray._p0) &&
                 _dir.equals(ray._dir);
     }
+
     /**
      * to string
      * @return a string with the ray details

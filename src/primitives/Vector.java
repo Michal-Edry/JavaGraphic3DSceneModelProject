@@ -107,7 +107,7 @@ public class Vector {
      * @param _a int number
      * @return a multiplied vector
      */
-    public Vector scale(int _a) {
+    public Vector scale(double _a) {
         return new Vector(new Point3D(this._head.get_x()._coord * _a, this._head.get_y()._coord * _a, this._head.get_z()._coord * _a));
     }
 

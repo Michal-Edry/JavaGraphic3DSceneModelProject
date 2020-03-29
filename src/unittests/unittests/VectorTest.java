@@ -24,6 +24,16 @@ public class VectorTest {
 
         v2 = v2.subtract(v1);
         assertTrue(v2.equals(new Vector(-3.0,-3.0,-5.0)));
+
+        // =============== Boundary Values Tests ==================
+        try {
+            v1 = v1.subtract(v1);
+            fail("Vector (0,0,0) not valid");
+        }
+        catch (IllegalArgumentException e){
+            assertTrue(e.getMessage()!= null);
+        }
+
     }
 
     /**
@@ -37,6 +47,16 @@ public class VectorTest {
 
         v2 = v2.add(v1);
         assertTrue(v2.equals(new Vector(-1.0,-1.0,-3.0)) );
+
+        // =============== Boundary Values Tests ==================
+        try{
+            Vector v3 = new Vector(0.0,0.0,1.0);
+            v1 = v1.add(v3);
+            fail("Vector (0,0,0) not valid");
+        }
+        catch (IllegalArgumentException e){
+            assertTrue(e.getMessage()!= null);
+        }
     }
 
     /**
@@ -53,6 +73,15 @@ public class VectorTest {
 
         v1 = v1.scale(-2);
         assertTrue(v1.equals(new Vector(-4.0,-4.0,-4.0)));
+
+        // =============== Boundary Values Tests ==================
+        try{
+            v1 = v1.scale(0.0);
+            fail("Vector (0,0,0) not valid");
+        }
+        catch (IllegalArgumentException e){
+            assertTrue(e.getMessage()!= null);
+        }
     }
 
     /**
@@ -62,6 +91,10 @@ public class VectorTest {
     public void dotProduct(){
         // ============ Equivalence Partitions Tests ==============
         assertTrue((v1.dotProduct(v2).equals(-1.0 + -1.0 + -2.0)));
+
+        // =============== Boundary Values Tests ==================
+            Vector v3 = new Vector(new Point3D(1.0,1.0,-1.0));
+            assertTrue(v2.dotProduct(v3).equals(-1.0 + -1.0 +2.0));
     }
 
     /**
@@ -78,6 +111,15 @@ public class VectorTest {
         Vector v4 = v2.crossProduct(v1);
         Point3D p = v3.get_head().add(v4);
         assertEquals("", 0, p.distance(Point3D.ZERO), 1e-10);
+
+        // =============== Boundary Values Tests ==================
+        try{
+            v3 = v3.add(v4);
+            fail("Vector (0,0,0) not valid");
+        }
+        catch (IllegalArgumentException e){
+            assertTrue(e.getMessage()!= null);
+        }
     }
 
     /**
@@ -88,6 +130,7 @@ public class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         assertTrue(v1.length() == Math.sqrt(1.0 + 1.0 + 1.0));
         assertTrue(v2.length() == Math.sqrt(1.0 + 1.0 + 4.0));
+
     }
 
     /**
