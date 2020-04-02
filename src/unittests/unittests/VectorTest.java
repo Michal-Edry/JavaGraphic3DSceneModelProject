@@ -144,4 +144,19 @@ public class VectorTest {
         v2 = v2.normalize();
         assertEquals("", 1, v2.length(),1e-10);
     }
+
+    @Test
+    public void lengthSquared() {
+        // ============ Equivalence Partitions Tests ==============
+        assertTrue(v1.LengthSquared() == (1.0 + 1.0 + 1.0));
+        assertTrue(v2.LengthSquared() == (1.0 + 1.0 + 4.0));
+    }
+
+    @Test
+    public void normalized() {
+        // ============ Equivalence Partitions Tests ==============
+        Vector v3 = v1.normalized();
+        assertEquals("", 1, v3.length(),1e-10);
+        assertEquals("", Math.sqrt(3), v1.length(),1e-10);
+    }
 }

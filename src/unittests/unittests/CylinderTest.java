@@ -19,12 +19,16 @@ public class CylinderTest {
      */
     @Test
     public void getNormal() {
-        Cylinder c1 = new Cylinder(1.0,new Ray(new Point3D(1.0,0.0,0.0),new Vector(0.0,1.0,0.0)),1.0);
-        //Cylinder c2 = new Cylinder(1.0,new Ray(new Point3D(1.0,0.0,0.0),new Vector(1.0,0.0,0.0)),2.0);
+        Cylinder c1 = new Cylinder(2.0,new Ray(new Point3D(0.0,0.0,0.0),new Vector(0.0,0.0,1.0)),6.0);
         // ============ Equivalence Partitions Tests ==============
-        assertTrue(c1.getNormal(new Point3D(1,0,0)).equals(new Vector(new Point3D(0,1,0))));
-        assertTrue(c1.getNormal(new Point3D(2,0,0)).equals(new Vector(new Point3D(0,1,0))));
-        // =============== Boundary Values Tests ==================
+        //point is on the side
+        assertTrue(c1.getNormal(new Point3D(2,0,2)).equals(new Vector(new Point3D(1,0,0))));
+        //point on the base with center point
+        assertTrue(c1.getNormal(new Point3D(1,0,0)).equals(new Vector(new Point3D(0,0,-1))));
+        //point on the base with out center point
+        assertTrue(c1.getNormal(new Point3D(1,0,6)).equals(new Vector(new Point3D(0,0,1))));
 
+        // =============== Boundary Values Tests ==================
+        // was checked in EP tests
     }
 }
