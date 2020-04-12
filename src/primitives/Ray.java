@@ -2,6 +2,8 @@ package primitives;
 
 import java.util.Objects;
 
+import static primitives.Util.isZero;
+
 /**
  * class of ray
  */
@@ -11,18 +13,20 @@ public class Ray {
 
     /**
      * constructor: gets a 3D point and a vector
-     * @param _p0 3D point
+     *
+     * @param _p0  3D point
      * @param _dir Vector
      */
     public Ray(Point3D _p0, Vector _dir) {
-        if(_dir.length() != 1)
+        if (_dir.length() != 1)
             _dir.normalize();
         this._p0 = new Point3D(_p0);
-        this._dir = new Vector( _dir);
+        this._dir = new Vector(_dir);
     }
 
     /**
      * copy constructor: gets a ray
+     *
      * @param _ray Ray
      */
     public Ray(Ray _ray) {
@@ -32,6 +36,7 @@ public class Ray {
 
     /**
      * getter fo p0
+     *
      * @return 3D point
      */
     public Point3D get_p0() {
@@ -40,6 +45,7 @@ public class Ray {
 
     /**
      * getter for dir
+     *
      * @return a vector
      */
     public Vector get_dir() {
@@ -49,6 +55,7 @@ public class Ray {
 
     /**
      * checks if 2 rays are equal
+     *
      * @param o gets a ray
      * @return if the rays are equal
      */
@@ -63,10 +70,19 @@ public class Ray {
 
     /**
      * to string
+     *
      * @return a string with the ray details
      */
     @Override
     public String toString() {
         return "" + _p0 + " " + _dir;
+    }
+
+    /**
+     * @param length
+     * @return new Point3D
+     */
+    public Point3D getPoint(double length) {
+        return isZero(length) ? _p0 : _p0.add(_dir.scale(length));
     }
 }

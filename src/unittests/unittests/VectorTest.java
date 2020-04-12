@@ -148,8 +148,8 @@ public class VectorTest {
     @Test
     public void lengthSquared() {
         // ============ Equivalence Partitions Tests ==============
-        assertTrue(v1.LengthSquared() == (1.0 + 1.0 + 1.0));
-        assertTrue(v2.LengthSquared() == (1.0 + 1.0 + 4.0));
+        assertTrue(v1.lengthSquared() == (1.0 + 1.0 + 1.0));
+        assertTrue(v2.lengthSquared() == (1.0 + 1.0 + 4.0));
     }
 
     @Test

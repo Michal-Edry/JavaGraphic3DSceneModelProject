@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.awt.geom.Area;
+import java.util.List;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -72,5 +73,10 @@ public class Cylinder extends Tube {
 
         o = o.add(v.scale(t));
         return _p.subtract(o).normalize();
+    }
+
+    @Override
+    public List<Point3D> findIntersections(Ray ray) {
+        return super.findIntersections(ray);
     }
 }

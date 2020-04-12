@@ -1,7 +1,5 @@
 package primitives;
 
-import java.util.Objects;
-
 /**
  * class of vector
  */
@@ -133,7 +131,7 @@ public class Vector {
      * calculates the squared length of a vector
      * @return the squared length
      */
-    public double LengthSquared()
+    public double lengthSquared()
     {
         return Point3D.ZERO.distanceSquared(this.get_head());
     }
@@ -143,7 +141,7 @@ public class Vector {
      * @return the length
      */
     public double length(){
-        return  Math.sqrt(this.LengthSquared());
+        return  Math.sqrt(this.lengthSquared());
     }
 
     /**
