@@ -66,6 +66,11 @@ public class Tube extends RadialGeometry {
         return check.normalize();
     }
 
+    /**
+     * gets a Ray and returns all the intersection points.
+     * @param ray
+     * @return List of Point3D
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         return null;

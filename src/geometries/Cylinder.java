@@ -75,6 +75,11 @@ public class Cylinder extends Tube {
         return _p.subtract(o).normalize();
     }
 
+    /**
+     * gets a Ray and returns all the intersection points.
+     * @param ray
+     * @return List of Point3D
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         return super.findIntersections(ray);

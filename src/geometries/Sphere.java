@@ -54,9 +54,9 @@ public class Sphere extends RadialGeometry {
     }
 
     /**
-     *
+     * gets a Ray and returns all the intersection points.
      * @param ray
-     * @return List of intersection points
+     * @return List of Point3D
      */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
