@@ -101,35 +101,35 @@ public class PolygonTests {
         List<Point3D> result;
 
         //TC01: Inside polygon (1 point)
-        ray = new Ray(new Point3D(0.5,0.5,-1),new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(0.5,0.5,-1),new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
         assertEquals("Inside polygon",new Point3D(0.5,0.5,0.5), result.get(0));
 
         //TC02: Outside against edge (0 points)
-        ray = new Ray(new Point3D(2,0.5,-1), new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(2,0.5,-1), new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("Outside against edge",null,result);
 
         //TC03: Outside against vertex (0 points)
-        ray = new Ray(new Point3D(2,3,-1), new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(2,3,-1), new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("Outside against vertex",null,result);
 
         // =============== Boundary Values Tests ==================
 
         //TC04: On edge (0 points)
-        ray = new Ray(new Point3D(1,0.5,-1), new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(1,0.5,-1), new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("On edge",null,result);
 
         //TC05: In vertex (0 points)
-        ray = new Ray(new Point3D(1,0,-1), new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(1,0,-1), new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("In vertex",null,result);
 
         //TC06: On edge's continuation (0 points)
-        ray = new Ray(new Point3D(2,2,-1), new Vector(new Point3D(0,0,1)));
+        ray = new Ray(new Point3D(2,2,-1), new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("On edge's continuation",null,result);
 
