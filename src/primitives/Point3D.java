@@ -92,6 +92,16 @@ public class Point3D {
     }
 
     /**
+     * subtracts a vector feom a point3D
+     * @param v Vector v
+     * @return Point3D
+     */
+    public Point3D subtract(Vector v) {
+        return new Point3D(this._x._coord - v._head._x._coord,
+                this._y._coord - v._head._y._coord,
+                this._z._coord - v._head._z._coord);
+    }
+    /**
      * subtracts 2 3D points and returns a vector that starts with the point that called the func
      * @param _p gets a 3D point
      * @return a vector

@@ -148,7 +148,7 @@ public class Vector {
      * normalizes the vector
      * @return our vector after changed
      */
-    public  Vector normalize()
+    public Vector normalize()
     {
         Vector _v = new Vector(new Point3D(this._head._x._coord/this.length(),this._head._y._coord/this.length(),this._head._z._coord/this.length()));
         this._head = new Point3D(_v.get_head());
