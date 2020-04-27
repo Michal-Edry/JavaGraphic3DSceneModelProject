@@ -17,21 +17,28 @@ public class Vector {
             throw new IllegalArgumentException("Illegal input");
     }
 
-    /**
-     * constructor: gets 3 coordinates
-     * @param _x coordinate x
-     * @param _y coordinate y
-     * @param _z coordinate z
-     * @throws IllegalArgumentException
-     */
+//    /**
+//     * constructor: gets 3 coordinates
+//     * @param _x coordinate x
+//     * @param _y coordinate y
+//     * @param _z coordinate z
+//     * @throws IllegalArgumentException
+//     */
+//    public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
+//        this._head._x = new Coordinate(_x);
+//        this._head._y = new Coordinate(_y);
+//        this._head._z = new Coordinate(_z);
+//        if (_head.equals(Point3D.ZERO))
+//            throw new IllegalArgumentException("Illegal input");
+//    }
     public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this._head._x = new Coordinate(_x);
-        this._head._y = new Coordinate(_y);
-        this._head._z = new Coordinate(_z);
-        if (_head.equals(Point3D.ZERO))
-            throw new IllegalArgumentException("Illegal input");
+        Point3D point=new Point3D(new Coordinate(_x), new Coordinate(_y), new Coordinate(_z));
+        if (point.equals(Point3D.ZERO))
+        {
+            throw new IllegalArgumentException("The point can't be zero");
+        }
+        _head=point;
     }
-
     /**
      * constructor: gets 3 doubles
      * @param _x double x

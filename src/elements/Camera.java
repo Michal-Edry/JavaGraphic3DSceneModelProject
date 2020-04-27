@@ -21,7 +21,7 @@ public class Camera {
      * @param _vUp Vector
      * @param _vTo Vector
      */
-    public Camera(Point3D _p0, Vector _vUp, Vector _vTo) {
+    public Camera(Point3D _p0, Vector _vTo, Vector _vUp) {
         if(_vUp.dotProduct(_vTo) != 0)
             throw new IllegalArgumentException("Vup must be orthogonal to Vto");
         this._p0 = _p0;
