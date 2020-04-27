@@ -63,8 +63,8 @@ public class Camera {
 
     /**
      *
-     * @param nX
-     * @param nY
+     * @param nX amount of pixels on X
+     * @param nY amount of pixels on y
      * @param j index j
      * @param i index i
      * @param screenDistance screen distance from camera
