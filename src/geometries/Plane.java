@@ -46,7 +46,7 @@ public class Plane implements Geometry{
 
     /**
      * getter for p
-     * @return
+     * @return Point3D
      */
     public Point3D get_p() {
         return _p;
@@ -54,7 +54,7 @@ public class Plane implements Geometry{
 
     /**
      * getter for normal
-     * @return
+     * @return Vector
      */
     public Vector getNormal() {
         return _normal;
