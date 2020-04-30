@@ -17,18 +17,18 @@ public class ImageWriterTest {
     @Test
     public void writeToImage() {
         String imagename = "first test";
-        int width = 1000;
-        int height = 1600;
-        int nx =500;
-        int ny =800;
+        int width = 1600;
+        int height = 1000;
+        int nx =800;
+        int ny =500;
         ImageWriter imageWriter = new ImageWriter(imagename, width, height, nx, ny);
         for (int col = 0; col < ny; col++) {
             for (int row = 0; row < nx; row++) {
                 if (col % 50 == 0 || row % 50 == 0) {
-                    imageWriter.writePixel(row, col, new Color(255,0,0));
+                    imageWriter.writePixel(row, col, new Color(50,20,220));
                 }
                 else
-                    imageWriter.writePixel(row, col, new Color(150,150,200));
+                    imageWriter.writePixel(row, col, new Color(255,100,150));
             }
         }
         imageWriter.writeToImage();
