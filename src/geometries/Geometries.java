@@ -44,14 +44,14 @@ public class Geometries implements Intersectable {
      * @return List of Point3D
      */
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        List<Point3D> intersections = null;
+    public List<GeoPoint> findIntersections(Ray ray) {
+        List<GeoPoint> intersections = null;
 
         for (Intersectable geo : _geometries) {
-            List<Point3D> tempIntersections = geo.findIntersections(ray);
+            List<GeoPoint> tempIntersections = geo.findIntersections(ray);
             if (tempIntersections != null) {
                 if (intersections == null)
-                    intersections = new ArrayList<Point3D>();
+                    intersections = new ArrayList<GeoPoint>();
                 intersections.addAll(tempIntersections);
             }
         }

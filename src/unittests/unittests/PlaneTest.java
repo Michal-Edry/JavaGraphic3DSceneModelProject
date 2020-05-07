@@ -1,5 +1,6 @@
 package unittests;
 
+import geometries.Intersectable;
 import geometries.Plane;
 import geometries.Triangle;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class PlaneTest {
 
         Plane plane = new Plane(new Point3D(1,0,0),new Point3D(0,1,0),new Point3D(0,0,1));
         Ray ray;
-        List<Point3D> result;
+        List<Intersectable.GeoPoint> result;
         //TC01: Ray intersects the plane (1 point)
         ray = new Ray(new Point3D(-1,-1,-1),new Vector(1,1,2));
         result = plane.findIntersections(ray);

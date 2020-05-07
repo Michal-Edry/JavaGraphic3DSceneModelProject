@@ -10,7 +10,7 @@ import static primitives.Util.*;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -21,9 +21,29 @@ public class Polygon implements Geometry {
     protected Plane _plane;
 
     /**
+     * constructor
+     * @param vertices Point3D...
+     */
+    public Polygon(Point3D... vertices) {
+        this(Color.BLACK, vertices);
+    }
+
+    /**
+     * constructor
+     * @param _emission Color
+     * @param vertices Point3D...
+     */
+    public Polygon(Color _emission, Point3D... vertices) {
+        this(_emission, new Material(0,0,0), vertices);
+    }
+
+
+    /**
      * Polygon constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
      *
+     * @param _emission Color
+     * @param _material Material
      * @param vertices list of vertices according to their order by edge path
      * @throws IllegalArgumentException in any case of illegal combination of
      *                                  vertices:
@@ -41,7 +61,9 @@ public class Polygon implements Geometry {
      *                                  <li>The polygon is concave (not convex></li>
      *                                  </ul>
      */
-    public Polygon(Point3D... vertices) {
+    public Polygon(Color _emission, Material _material, Point3D... vertices) {
+        super(_emission, _material);
+
         if (vertices.length < 3)
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
         _vertices = List.of(vertices);
@@ -80,10 +102,24 @@ public class Polygon implements Geometry {
         }
     }
 
+    /**
+     * get the normal to this polygon in a given point
+     * @param point Point3D
+     * @return Vector
+     */
     @Override
     public Vector getNormal(Point3D point) {
         return _plane.getNormal();
     }
+
+    public Polygon(List<Point3D> _vertices, Plane _plane) {
+        this._vertices = _vertices;
+        this._plane = _plane;
+    }
+
+
+
+
 
     /**
      * gets a Ray and returns all the intersection points.
@@ -91,8 +127,8 @@ public class Polygon implements Geometry {
      * @return List of Point3D
      */
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        List<Point3D> intersections = _plane.findIntersections(ray);
+    public List<GeoPoint> findIntersections(Ray ray) {
+        List<GeoPoint> intersections = _plane.findIntersections(ray);
         if (intersections == null) return null;
 
         Point3D p0 = ray.get_p0();
@@ -113,6 +149,9 @@ public class Polygon implements Geometry {
             if (isZero(sign)) return null;
             if (positive != (sign >0)) return null;
         }
+
+        intersections.get(0)._geometry = this;
+
         return intersections;
     }
 }

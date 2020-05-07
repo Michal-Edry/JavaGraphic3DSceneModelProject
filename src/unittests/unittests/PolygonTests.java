@@ -1,5 +1,6 @@
 package unittests;
 
+import geometries.Intersectable;
 import geometries.Polygon;
 import org.junit.Test;
 import primitives.Point3D;
@@ -98,7 +99,7 @@ public class PolygonTests {
 
         Polygon polygon = new Polygon(new Point3D(0,0,0), new Point3D(1,0,0), new Point3D(1,1,1), new Point3D(0,1,1));
         Ray ray;
-        List<Point3D> result;
+        List<Intersectable.GeoPoint> result;
 
         //TC01: Inside polygon (1 point)
         ray = new Ray(new Point3D(0.5,0.5,-1),new Vector(0,0,1));

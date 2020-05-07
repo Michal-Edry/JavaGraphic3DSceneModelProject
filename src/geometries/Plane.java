@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
@@ -12,7 +10,7 @@ import static primitives.Util.isZero;
 /**
  * class of plane
  */
-public class Plane implements Geometry{
+public class Plane extends Geometry{
 
     protected Point3D _p;
     protected Vector _normal;
@@ -24,6 +22,30 @@ public class Plane implements Geometry{
      * @param _p3 3D point
      */
     public Plane(Point3D _p1, Point3D _p2, Point3D _p3){
+        this(Color.BLACK, _p1, _p2, _p3);    }
+
+    /**
+     * constructor
+     * @param _emission Color
+     * @param _p1 Point3D
+     * @param _p2 Point3D
+     * @param _p3 Point3D
+     */
+    public Plane(Color _emission,Point3D _p1, Point3D _p2, Point3D _p3){
+        this(_emission, new Material(0,0,0), _p1, _p2, _p3);
+    }
+
+    /**
+     * constructor
+     * @param _emission Color
+     * @param _material Material
+     * @param _p1 Point3D
+     * @param _p2 Point3D
+     * @param _p3 Point3D
+     */
+    public Plane(Color _emission, Material _material, Point3D _p1, Point3D _p2, Point3D _p3){
+        super(_emission,_material);
+
         _p = new Point3D(_p1);
 
         Vector U = new Vector(_p1.subtract(_p2));
@@ -33,15 +55,35 @@ public class Plane implements Geometry{
 
         _normal = N.scale(-1);
     }
+        /**
+         * constructor: gets a 3D point and a vector
+         * @param _p 3D point
+         * @param _normal vector
+         */
+    public Plane(Point3D _p, Vector _normal) {
+        this(Color.BLACK,_p,_normal);
+    }
+    /**
+     * constructor
+     * @param _emission Color
+     * @param _p Point3D
+     * @param _normal Vector
+     */
+    public Plane(Color _emission, Point3D _p, Vector _normal) {
+        this(_emission, new Material(0,0,0),_p,_normal);
+    }
 
     /**
-     * constructor: gets a 3D point and a vector
-     * @param _p 3D point
-     * @param _normal vector
+     * constructor
+     * @param _emission Color
+     * @param _material Material
+     * @param _p Point3D
+     * @param _normal Vector
      */
-    public Plane(Point3D _p, Vector _normal) {
-        this._p = new Point3D(_p);
-        this._normal = new Vector(_normal);
+    public Plane(Color _emission, Material _material, Point3D _p, Vector _normal) {
+        super(_emission, _material);
+        this._p = _p;
+        this._normal = _normal;
     }
 
     /**
@@ -82,7 +124,7 @@ public class Plane implements Geometry{
      * @return List of Point3D
      */
    @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findIntersections(Ray ray) {
         Vector p0Q;
         try {
             p0Q = _p.subtract(ray.get_p0());
@@ -96,7 +138,6 @@ public class Plane implements Geometry{
 
         double t = alignZero(_normal.dotProduct(p0Q) / nv);
 
-        return t <= 0 ? null : List.of(ray.getPoint(t));
+        return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
-
 }

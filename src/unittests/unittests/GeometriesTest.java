@@ -15,7 +15,7 @@ public class GeometriesTest {
     @Test
     public void findIntersections() {
         Ray ray;
-        List<Point3D> result;
+        List<Intersectable.GeoPoint> result;
         // ============ Equivalence Partitions Tests ==============
         Geometries geometries = new Geometries(new Sphere(2, new Point3D(0,0,0)),
                                 new Triangle(new Point3D(1,0,0),new Point3D(5,0,0),new Point3D(0,4,5)),

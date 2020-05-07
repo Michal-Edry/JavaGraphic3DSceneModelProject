@@ -1,5 +1,6 @@
 package unittests;
 
+import geometries.Intersectable;
 import geometries.Plane;
 import geometries.Polygon;
 import geometries.Triangle;
@@ -32,7 +33,7 @@ public class TriangleTests {
         // ============ Equivalence Partitions Tests ==============
         Triangle triangle = new Triangle(new Point3D(1,0,0),new Point3D(0,1,0),new Point3D(0,0,1));
         Ray ray;
-        List<Point3D> result;
+        List<Intersectable.GeoPoint> result;
 
         //TC01: Inside triangle (1 point)
         ray = new Ray(new Point3D(-1,-3,-2),new Vector(1,3,2));

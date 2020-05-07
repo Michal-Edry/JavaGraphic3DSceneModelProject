@@ -5,6 +5,7 @@ import geometries.*;
 import primitives.*;
 import scene.Scene;
 import java.awt.Color;
+import geometries.Intersectable.GeoPoint;
 
 
 import java.util.List;
@@ -47,12 +48,12 @@ public class Render {
         Ray ray;
         for (int row = 0; row < Ny; row++) {
             for (int column = 0; column < Nx; column++) {
-                ray = camera.constructRayThroughPixel(Nx, Ny, row, column, distance, width, height);
-                List<Point3D> intersectionPoints = _scene.getGeometries().findIntersections(ray);
+                ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
+                List<GeoPoint> intersectionPoints = _scene.getGeometries().findIntersections(ray);
                 if (intersectionPoints == null) {
                     _imageWriter.writePixel(column, row, background);
                 } else {
-                    Point3D closestPoint = getClosestPoint(intersectionPoints);
+                    GeoPoint closestPoint = getClosestPoint(intersectionPoints);
                     _imageWriter.writePixel(column-1, row-1, calcColor(closestPoint));
                 }
             }
@@ -64,8 +65,16 @@ public class Render {
      * @param point Point3D
      * @return Color
      */
-    private Color calcColor(Point3D point) {
-        return _scene.getAmbientLight().getIntensity();
+    private Color calcColor(GeoPoint point) {
+        primitives.Color resultColor;
+        primitives.Color ambientLight = new primitives.Color(_scene.getAmbientLight().getIntensity());
+        primitives.Color emissionLight = point.get_geometry().get_emission();
+
+        resultColor = ambientLight;
+        resultColor = resultColor.add(emissionLight);
+
+        return resultColor.getColor();
+
     }
 
     /**
@@ -75,17 +84,18 @@ public class Render {
      * @return  the closest point to the camera
      * change to public for test
      */
-    private Point3D getClosestPoint(List<Point3D> intersectionPoints) {
-        Point3D result = null;
+    private GeoPoint getClosestPoint(List<GeoPoint> intersectionPoints) {
+        GeoPoint result = null;
         double mindist = Double.MAX_VALUE;
 
         Point3D p0 = this._scene.getCamera().get_p0();
 
-        for (Point3D pt: intersectionPoints ) {
+        for (GeoPoint geo: intersectionPoints ) {
+            Point3D pt = geo.get_point();
             double distance = p0.distance(pt);
             if (distance < mindist){
                 mindist= distance;
-                result =pt;
+                result = geo;
             }
         }
         return  result;

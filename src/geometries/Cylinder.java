@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.awt.geom.Area;
 import java.util.List;
@@ -25,7 +23,31 @@ public class Cylinder extends Tube {
      * @param _height double
      */
     public Cylinder(double _radius, Ray _axisRay, double _height) {
-        super(_radius, _axisRay);
+        this(Color.BLACK,_radius,_axisRay,_height);
+    }
+
+    /**
+     * constructor
+     * @param _emission Color
+     * @param _radius double
+     * @param _axisRay Ray
+     * @param _height double
+     */
+    public Cylinder(Color _emission, double _radius, Ray _axisRay, double _height) {
+        this(_emission,new Material(0,0,0),_radius,_axisRay,_height);
+    }
+
+    /**
+     * constructor
+     * @param _emission Color
+     * @param _material Material
+     * @param _radius double
+     * @param _axisRay Ray
+     * @param _height double
+     */
+    public Cylinder(Color _emission, Material _material, double _radius, Ray _axisRay, double _height) {
+        super(_emission, _radius, _axisRay);
+        this._material = _material;
         this._height = _height;
     }
 
@@ -81,7 +103,7 @@ public class Cylinder extends Tube {
      * @return List of Point3D
      */
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findIntersections(Ray ray) {
         return super.findIntersections(ray);
     }
 }
