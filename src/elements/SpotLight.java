@@ -14,9 +14,9 @@ public class SpotLight extends PointLight{
      * @param _kQ double
      * @param _direction Vector
      */
-    public SpotLight(Color _intensity, Point3D _position, double _kC, double _kL, double _kQ, Vector _direction) {
+    public SpotLight(Color _intensity, Point3D _position, Vector _direction, double _kC, double _kL, double _kQ) {
         super(_intensity, _position, _kC, _kL, _kQ);
-        this._direction = _direction;
+        this._direction = new Vector(_direction.normalized());
     }
 
     /**
@@ -26,12 +26,9 @@ public class SpotLight extends PointLight{
      * @return intensity I<sub>P</sub>
      */
     public Color getIntensity(Point3D p){
-
-        Vector i = p.subtract(_position);
-        double temp = _direction.dotProduct(i);
-        if(temp <= 0)
-            return _intensity.scale(0);
-        Color il = super.getIntensity(p).scale(temp);
+        Color pointLightIntensity = super.getIntensity(p);
+        double projection = _direction.dotProduct(getL(p));
+        Color il = pointLightIntensity.scale(Math.max(0,projection));
         return il;
     }
 
@@ -43,6 +40,6 @@ public class SpotLight extends PointLight{
      * @return light to point vector
      */
     public Vector getL(Point3D p){
-        return _direction;
+        return p.subtract(_position).normalize();
     }
 }

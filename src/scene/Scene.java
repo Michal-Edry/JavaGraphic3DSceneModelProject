@@ -84,7 +84,7 @@ public class Scene {
      * getter for _lights
      * @return List<LightSource>
      */
-    public List<LightSource> get_lights() {
+    public List<LightSource> getLightSources() {
         return _lights;
     }
 

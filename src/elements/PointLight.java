@@ -34,6 +34,7 @@ public class PointLight extends Light implements LightSource {
         double denominator = _kC + _kL*distance + _kQ*distance*distance;
         Color il = _intensity.reduce(denominator);
         return il;
+
     }
 
     /**
@@ -44,6 +45,9 @@ public class PointLight extends Light implements LightSource {
      * @return light to point vector
      */
     public Vector getL(Point3D p){
-        return null;
+        if (p.equals(_position)) {
+            return null;
+        }
+        return p.subtract(_position).normalize();
     }
 }
