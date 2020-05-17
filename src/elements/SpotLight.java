@@ -40,6 +40,6 @@ public class SpotLight extends PointLight{
      * @return light to point vector
      */
     public Vector getL(Point3D p){
-        return p.subtract(_position).normalize();
+        return super.getL(p);
     }
 }
