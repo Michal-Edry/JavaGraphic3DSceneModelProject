@@ -20,6 +20,12 @@ public class Render {
     private Scene _scene;
     private ImageWriter _imageWriter;
 
+    private static final double DELTA = 0.1;
+
+    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final double MIN_CALC_COLOR_K = 0.001;
+
+
     /**
      * constructor
      * @param imageWriter ImageWriter
@@ -90,11 +96,13 @@ public class Render {
                 double nv = alignZero(n.dotProduct(v));
 
                 if (sign(nl) == sign(nv)) {
-                    primitives.Color ip = lightSource.getIntensity(geoPoint.get_point());
-                    resultColor = resultColor.add(
-                            calcDiffusive(kd, nl, ip),
-                            calcSpecular(ks, l, n, nl, v, nShininess, ip)
-                    );
+                    if (unshaded(lightSource, l, n, geoPoint)) {
+                        primitives.Color ip = lightSource.getIntensity(geoPoint.get_point());
+                        resultColor = resultColor.add(
+                                calcDiffusive(kd, nl, ip),
+                                calcSpecular(ks, l, n, nl, v, nShininess, ip)
+                        );
+                    }
                 }
             }
         }
@@ -208,4 +216,28 @@ public class Render {
         _imageWriter.writeToImage();
     }
 
+    /**
+     * checks if a point is unshaded
+     * @param l Vector
+     * @param n Vector
+     * @param geopoint GeoPoint
+     * @return boolean
+     */
+    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geopoint)
+    {
+        Vector lightDirection = l.scale(-1); // from point to light source
+
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
+        Point3D point = geopoint.get_point().add(delta);
+        Ray lightRay = new Ray(point, lightDirection);
+
+        List<GeoPoint> intersections = _scene.getGeometries().findIntersections(lightRay);
+        if (intersections == null) return true;
+        double lightDistance = light.getDistance(geopoint.get_point());
+        for (GeoPoint gp : intersections) {
+            if (alignZero(gp.get_point().distance(geopoint.get_point()) - lightDistance) <= 0)
+                return false;
+        }
+        return true;
+    }
 }

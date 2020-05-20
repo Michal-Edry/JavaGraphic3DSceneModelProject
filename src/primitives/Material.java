@@ -4,17 +4,33 @@ public class Material {
     double _kD;
     double _kS;
     int _nShininess;
+    double _kT;
+    double _kR;
 
     /**
      * constructor
      * @param _kD double
      * @param _kS double
-     * @param _nShininess double
+     * @param _nShininess int
      */
     public Material(double _kD, double _kS, int _nShininess) {
+        this(_kD,_kS,_nShininess,0,0);
+    }
+
+    /**
+     * constructor
+     * @param _kD double
+     * @param _kS double
+     * @param _nShininess int
+     * @param _kT double
+     * @param _kR double
+     */
+    public Material(double _kD, double _kS, int _nShininess, double _kT, double _kR) {
         this._kD = _kD;
         this._kS = _kS;
         this._nShininess = _nShininess;
+        this._kT = _kT;
+        this._kR = _kR;
     }
 
     /**
@@ -39,5 +55,21 @@ public class Material {
      */
     public int get_nShininess() {
         return _nShininess;
+    }
+
+    /**
+     * getter for _kT
+     * @return double
+     */
+    public double get_kT() {
+        return _kT;
+    }
+
+    /**
+     * getter for _kR
+     * @return double
+     */
+    public double get_kR() {
+        return _kR;
     }
 }
