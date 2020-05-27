@@ -8,6 +8,8 @@ import static primitives.Util.isZero;
  * class of ray
  */
 public class Ray {
+    private static final double DELTA = 0.1;
+
     protected Point3D _p0;
     protected Vector _dir;
 
@@ -33,6 +35,23 @@ public class Ray {
         this._p0 = new Point3D(_ray.get_p0());
         this._dir = new Vector(_ray.get_dir());
     }
+
+    /**
+     * constructor
+     * @param point Point3D
+     * @param direction Vector
+     * @param normal Vector
+     */
+    public Ray(Point3D point, Vector direction, Vector normal) {
+        //point + normal.scale(±DELTA)
+        _dir = new Vector(direction).normalized();
+
+        double nv = normal.dotProduct(direction);
+
+        Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
+        _p0 = point.add(normalDelta);
+    }
+
 
     /**
      * getter fo p0
