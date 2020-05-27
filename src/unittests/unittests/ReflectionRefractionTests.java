@@ -3,6 +3,7 @@
  */
 package unittests;
 
+import geometries.Polygon;
 import org.junit.Test;
 
 import elements.*;
@@ -105,4 +106,42 @@ public class ReflectionRefractionTests {
         render.renderImage();
         render.writeToImage();
     }
+
+    @Test
+    public void testAllEffects() {
+        Scene scene = new Scene("Test scene");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
+
+        scene.addGeometries( //
+                new Triangle(new Color(java.awt.Color.RED), new Material(0.5, 0.5, 60), //
+                        new Point3D(0, 0, 200), new Point3D(100, -100, 200), new Point3D(-100, -100, 200)), //
+                new Triangle(new Color(java.awt.Color.RED), new Material(0.5, 0.5, 60),
+                        new Point3D(0,0,200),new Point3D(100,100,200), new Point3D(-100,100,200)),
+                 new Sphere(new Color(java.awt.Color.BLUE), new Material(0.2, 0.2, 30, 0.6, 0), // )
+                        30, new Point3D(70, -70, 70)),
+                new Sphere(new Color(java.awt.Color.BLUE), new Material(0.2, 0.2, 30, 0.6, 0), // )
+                        30, new Point3D(-70, 70, -70)),
+                new Sphere(new Color(java.awt.Color.BLUE), new Material(0.2, 0.2, 30, 0.6, 0), // )
+                       30, new Point3D(70, 70, -70)),
+                new Sphere(new Color(java.awt.Color.BLUE), new Material(0.2, 0.2, 30, 0.6, 0), // )
+                        30, new Point3D(-70, -70, 70)),
+                new Sphere(new Color(java.awt.Color.GREEN), new Material(0.2, 0.2, 30, 0, 0.6), // )
+                        20, new Point3D(0, 0, 70))
+
+        );
+
+      //  scene.addLights(new SpotLight(new Color(700, 400, 400), //
+        //        new Point3D(60, -50, 0), new Vector(0, 0, 1), 1, 4E-5, 2E-7));
+        scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
+                0.0004, 0.0000006));
+        ImageWriter imageWriter = new ImageWriter("allEffects", 200, 200, 600, 600);
+        Render render = new Render(imageWriter, scene);
+
+        render.renderImage();
+        render.writeToImage();
+    }
+
 }
