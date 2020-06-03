@@ -107,6 +107,9 @@ public class ReflectionRefractionTests {
         render.writeToImage();
     }
 
+    /**
+     * test all effects together
+     */
     @Test
     public void testAllEffects() {
         Scene scene = new Scene("Test scene");
