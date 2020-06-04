@@ -1,8 +1,13 @@
 package elements;
 
+import geometries.Intersectable;
+import geometries.Plane;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static primitives.Util.isZero;
 
@@ -62,7 +67,7 @@ public class Camera {
     }
 
     /**
-     *
+     * constructs a ray through a pixel
      * @param nX amount of pixels on X
      * @param nY amount of pixels on y
      * @param j index j
@@ -70,7 +75,7 @@ public class Camera {
      * @param screenDistance screen distance from camera
      * @param screenWidth screen width
      * @param screenHeight screen hight
-     * @return
+     * @return Ray
      */
     public Ray constructRayThroughPixel (int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight)
     {
@@ -103,4 +108,78 @@ public class Camera {
         return new Ray(_p0,Vij);
     }
 
+    /**
+     * constructs a beam of rays that start at the view plane towards the focal point
+     * @param nX amount of pixels on X
+     * @param nY amount of pixels on y
+     * @param j index j
+     * @param i index i
+     * @param screenDistance screen distance from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen hight
+     * @param focalPlane focal plane
+     * @return List of rays
+     */
+    public List<Ray> constructRaysBeamThroughPixel(int nX, int nY, double j, double i, double screenDistance,double screenWidth, double screenHeight, Plane focalPlane){
+
+        double Rx = screenWidth / nX;//the length of pixel in X axis
+        double Ry = screenHeight / nY;//the length of pixel in Y axis
+
+        Point3D Pc = new Point3D(_p0.add(_vTo.scale(screenDistance)));//new point from the camera to the screen
+
+        double yi = ((i - nY / 2d) * Ry + Ry / 2d);
+        double xj = ((j - nX / 2d) * Rx + Rx / 2d);
+
+        //pc is the center of the view plane
+        Point3D P = Pc.add(_vRight.scale(xj).subtract(_vUp.scale(yi)));
+
+        Ray ray = new Ray(P, P.subtract(_p0));
+
+        //find focal point
+        List<Intersectable.GeoPoint> intersections = focalPlane.findIntersections(ray);
+        if(intersections == null){
+            throw new IllegalArgumentException("no intersections found");
+        }
+
+        Point3D focal_point = intersections.get(0).get_point();
+
+        List<Ray> rays = new LinkedList<>();
+
+        rays.add(ray);
+
+
+        // x coord middle of pixel/2 downwards
+        Point3D tmp = new Point3D(P.get_x().get() - Rx / 2, P.get_y().get(), P.get_z().get());
+        rays.add(new Ray(tmp,new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // y coord middle of pixel/2 downward
+        tmp = new Point3D(P.get_x().get(), P.get_y().get() - Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // x coord middle of pixel/2 upwards
+        tmp = new Point3D(P.get_x().get() + Rx / 2, P.get_y().get(), P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // y coord middle of pixel/2 upward
+        tmp = new Point3D(P.get_x().get(), P.get_y().get() + Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // x coord middle of pixel/2 downwards  y coord middle of pixel/2 downward
+        tmp = new Point3D(P.get_x().get() - Rx / 2, P.get_y().get() - Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // x coord middle of pixel/2 upwards  y coord middle of pixel/2 downward
+        tmp = new Point3D(P.get_x().get() + Rx / 2, P.get_y().get() - Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // x coord middle of pixel/2 downwards    y coord middle of pixel/2 upward
+        tmp = new Point3D(P.get_x().get() - Ry / 2, P.get_y().get() + Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        // x coord middle of pixel/2 upwards   y coord middle of pixel/2 upward
+        tmp = new Point3D(P.get_x().get() + Ry / 2, P.get_y().get() + Ry / 2, P.get_z().get());
+        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
+
+        return rays;
+    }
 }

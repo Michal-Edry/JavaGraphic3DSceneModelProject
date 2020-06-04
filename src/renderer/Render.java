@@ -9,6 +9,7 @@ import java.awt.Color;
 import geometries.Intersectable.GeoPoint;
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -23,6 +24,15 @@ public class Render {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
+    private int _depthOfField = 0; //if 0: don't use depth of fields, else: use
+
+    /**
+     * setter of _depthOfField
+     * @param _depthOfField int
+     */
+    public void set_depthOfField(int _depthOfField) {
+        this._depthOfField = _depthOfField;
+    }
 
     /**
      * constructor
@@ -39,10 +49,11 @@ public class Render {
      * This function is not creating the picture file, but create the buffer pf pixels
      */
     public void renderImage() {
-        java.awt.Color background = _scene.getBackground().getColor();
+        primitives.Color background = _scene.getBackground();
         Camera camera= _scene.getCamera();
         Intersectable geometries = _scene.getGeometries();
         double  distance = _scene.getDistance();
+        Plane plane = _scene.getFocal_plane();
 
         //width and height are the number of pixels in the rows
         //and columns of the view plane
@@ -53,18 +64,45 @@ public class Render {
         int Nx = _imageWriter.getNx();
         int Ny = _imageWriter.getNy();
         Ray ray;
-        for (int row = 0; row < Ny; row++) {
-            for (int column = 0; column < Nx; column++) {
-                ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
-                List<GeoPoint> intersectionPoints = _scene.getGeometries().findIntersections(ray);
-                if (intersectionPoints == null) {
-                    _imageWriter.writePixel(column, row, background);
-                } else {
-                    GeoPoint closestPoint = getClosestPoint(intersectionPoints);
-                    _imageWriter.writePixel(column, row, calcColor(closestPoint,ray).getColor());
+
+        if(_depthOfField == 0) {
+
+            for (int row = 0; row < Ny; row++) {
+                for (int column = 0; column < Nx; column++) {
+                    ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
+                    List<GeoPoint> intersectionPoints = _scene.getGeometries().findIntersections(ray);
+                    if (intersectionPoints == null) {
+                        _imageWriter.writePixel(column, row, background.getColor());
+                    } else {
+                        GeoPoint closestPoint = getClosestPoint(intersectionPoints);
+                        _imageWriter.writePixel(column, row, calcColor(closestPoint, ray).getColor());
+                    }
                 }
             }
         }
+        else { //depth of fields
+            for(int row = 0; row < Ny; row++){
+                for (int column = 0; column < Nx; column++) {
+                    ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
+                    GeoPoint closestPoint;
+                    List<Ray> rayBeam  = camera.constructRaysBeamThroughPixel(Nx, Ny, column, row, distance, width, height,plane);
+                    primitives.Color averageColor = primitives.Color.BLACK;
+                    primitives.Color Bckg = new primitives.Color(background.getColor());
+                    for (Ray r : rayBeam) {
+                        closestPoint = findClosestIntersection(r);
+                        if (closestPoint == null) {
+                            averageColor = averageColor.add(Bckg);
+                        } else {
+                            averageColor = averageColor.add(calcColor(closestPoint, ray));
+                        }
+                        averageColor = averageColor.reduce(rayBeam.size());
+                    }
+                    _imageWriter.writePixel(column, row, averageColor.getColor());
+                }
+            }
+
+        }
+
     }
 
 
