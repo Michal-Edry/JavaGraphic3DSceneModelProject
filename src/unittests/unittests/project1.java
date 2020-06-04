@@ -64,7 +64,7 @@ public class project1 {
 
         ImageWriter imageWriter = new ImageWriter("project1", 200, 200, 600, 600);
         Render render = new Render(imageWriter, scene);
-        render.set_depthOffield(1);
+        render.set_depthOfField(1);
 
         render.renderImage();
         render.writeToImage();
