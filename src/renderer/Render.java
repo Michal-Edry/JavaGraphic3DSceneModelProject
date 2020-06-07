@@ -85,7 +85,7 @@ public class Render {
                 for (int column = 0; column < Nx; column++) {
                     ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
                     GeoPoint closestPoint;
-                    List<Ray> rayBeam  = camera.constructRaysBeamThroughPixel(Nx, Ny, column, row, distance, width, height,plane);
+                    List<Ray> rayBeam  = camera.constructFocalRays(ray.get_p0().add(ray.get_dir()));
                     primitives.Color averageColor = primitives.Color.BLACK;
                     primitives.Color Bckg = new primitives.Color(background.getColor());
                     for (Ray r : rayBeam) {
@@ -126,7 +126,6 @@ public class Render {
      * @param nShininess shininess level
      * @param ip         light intensity at the point
      * @return specular component light effect at the point
-     * @author Dan Zilberstein
      * <p>
      * Finally, the Phong model has a provision for a highlight, or specular, component, which reflects light in a
      * shiny way. This is defined by [rs,gs,bs](-V.R)^p, where R is the mirror reflection direction vector we discussed
@@ -151,7 +150,6 @@ public class Render {
      * @param nl dot-product n*l
      * @param ip light intensity at the point
      * @return diffusive component of light reflection
-     * @author Dan Zilberstein
      * <p>
      * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
      * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy

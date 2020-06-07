@@ -11,6 +11,9 @@ import java.util.List;
 
 import static primitives.Util.isZero;
 
+import java.util.Random;
+
+
 /**
  * class of Camera
  */
@@ -19,6 +22,12 @@ public class Camera {
     Vector _vUp;
     Vector _vTo;
     Vector _vRight;
+
+    private int DOF = 10;
+    private double aperture = 4;
+    private double _focal = 100;
+    Random rand = new Random();
+
 
     /**
      * constructor
@@ -180,6 +189,30 @@ public class Camera {
         tmp = new Point3D(P.get_x().get() + Ry / 2, P.get_y().get() + Ry / 2, P.get_z().get());
         rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
 
+        return rays;
+    }
+
+    public List<Ray> constructFocalRays(Point3D point)
+    {
+        Vector v = point.subtract(_p0);
+        if (DOF == 0)
+            return List.of(new Ray(_p0,v));
+
+        v.normalize();
+        Point3D focalPoint = point.add(v.scale(_focal / _vTo.dotProduct(v)));
+
+        List<Ray> rays = new LinkedList<>();
+        for(int i = DOF; i < 0; --i){
+            double x = rand.nextDouble()*2-1;
+            double y = Math.sqrt(1-x*x);
+            Point3D p = point;
+            double mult = (rand.nextDouble()-0.5)* aperture;
+            if(!isZero(x))
+                p.add(_vRight.scale(x*mult));
+            if(!isZero(y))
+                p.add(_vUp.scale(y*mult));
+            rays.add(new Ray(p, focalPoint.subtract(p)));
+        }
         return rays;
     }
 }
