@@ -43,14 +43,14 @@ public abstract class Geometry implements Intersectable {
      * getter for emission
      * @return Color
      */
-    public Color get_emission() {
+    public Color getEmission() {
         return _emission;
     }
     /**
      * getter for _material
      * @return Material
      */
-    public Material get_material() {
+    public Material getMaterial() {
         return _material;
     }
 

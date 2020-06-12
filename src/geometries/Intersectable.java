@@ -14,7 +14,7 @@ public interface Intersectable {
     /**
      * inner class of GeoPoint
      */
-    public static class GeoPoint {
+    public  class GeoPoint {
         Geometry _geometry;
         Point3D _point;
 
@@ -46,7 +46,7 @@ public interface Intersectable {
          * getter for _point
          * @return Point3D
          */
-        public Point3D get_point() {
+        public Point3D getPoint() {
             return _point;
         }
 
@@ -54,7 +54,7 @@ public interface Intersectable {
          * getter for _geometry
          * @return Geometry
          */
-        public Geometry get_geometry() {
+        public Geometry getGeometry() {
             return _geometry;
         }
     }

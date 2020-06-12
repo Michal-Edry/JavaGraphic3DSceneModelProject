@@ -90,7 +90,7 @@ public class Plane extends Geometry{
      * getter for p
      * @return Point3D
      */
-    public Point3D get_p() {
+    public Point3D getP() {
         return _p;
     }
 
@@ -127,12 +127,12 @@ public class Plane extends Geometry{
     public List<GeoPoint> findIntersections(Ray ray) {
         Vector p0Q;
         try {
-            p0Q = _p.subtract(ray.get_p0());
+            p0Q = _p.subtract(ray.getP0());
         } catch (IllegalArgumentException e) {
             return null; // ray starts from point Q - no intersections
         }
 
-        double nv = _normal.dotProduct(ray.get_dir());
+        double nv = _normal.dotProduct(ray.getDir());
         if (isZero(nv)) // ray is parallel to the plane - no intersections
             return null;
 

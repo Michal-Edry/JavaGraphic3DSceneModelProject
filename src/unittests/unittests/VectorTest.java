@@ -109,7 +109,7 @@ public class VectorTest {
         assertEquals("", 0, v3.dotProduct(v1), 1e-10);
 
         Vector v4 = v2.crossProduct(v1);
-        Point3D p = v3.get_head().add(v4);
+        Point3D p = v3.getHead().add(v4);
         assertEquals("", 0, p.distance(Point3D.ZERO), 1e-10);
 
         // =============== Boundary Values Tests ==================

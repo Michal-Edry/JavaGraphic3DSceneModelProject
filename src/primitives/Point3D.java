@@ -1,7 +1,5 @@
 package primitives;
 
-import java.util.Objects;
-
 /**
  * Class of 3D point
  */
@@ -41,30 +39,30 @@ public class Point3D {
      * @param _p Point3D
      */
     public Point3D(Point3D _p) {
-        this._x = new Coordinate(_p.get_x());
-        this._y = new Coordinate(_p.get_y());
-        this._z = new Coordinate(_p.get_z());
+        this._x = new Coordinate(_p.getX());
+        this._y = new Coordinate(_p.getY());
+        this._z = new Coordinate(_p.getZ());
     }
 
     /**
      * getter for x
      * @return coordinate x
      */
-    public Coordinate get_x() {
+    public Coordinate getX() {
         return _x;
     }
     /**
      * getter for y
      * @return coordinate y
      */
-    public Coordinate get_y() {
+    public Coordinate getY() {
         return _y;
     }
     /**
      * getter for z
      * @return coordinate z
      */
-    public Coordinate get_z() {
+    public Coordinate getZ() {
         return _z;
     }
 
@@ -107,7 +105,7 @@ public class Point3D {
      * @return a vector
      */
     public Vector subtract(Point3D _p){
-        return new Vector(new Point3D(this.get_x()._coord - _p.get_x()._coord ,this.get_y()._coord - _p.get_y()._coord,this.get_z()._coord - _p.get_z()._coord));
+        return new Vector(new Point3D(this._x._coord - _p.getX()._coord ,this.getY()._coord - _p.getY()._coord,this.getZ()._coord - _p.getZ()._coord));
     }
 
     /**
@@ -116,7 +114,7 @@ public class Point3D {
      * @return a 3D point
      */
     public Point3D add(Vector _v){
-        return new Point3D(this.get_x()._coord + _v.get_head().get_x()._coord, this.get_y()._coord + _v.get_head().get_y()._coord, this.get_z()._coord + _v.get_head().get_z()._coord);
+        return new Point3D(this.getX()._coord + _v.getHead().getX()._coord, this.getY()._coord + _v.getHead().getY()._coord, this.getZ()._coord + _v.getHead().getZ()._coord);
     }
 
     /**
@@ -125,7 +123,7 @@ public class Point3D {
      * @return the squared distance
      */
     public double distanceSquared(Point3D _p){
-        return ((_p.get_x()._coord - this.get_x()._coord)*(_p.get_x()._coord - this.get_x()._coord) + (_p.get_y()._coord - this.get_y()._coord)*(_p.get_y()._coord - this.get_y()._coord) + (_p.get_z()._coord - this.get_z()._coord)*(_p.get_z()._coord - this.get_z()._coord));
+        return ((_p.getX()._coord - this.getX()._coord)*(_p.getX()._coord - this.getX()._coord) + (_p.getY()._coord - this.getY()._coord)*(_p.getY()._coord - this.getY()._coord) + (_p.getZ()._coord - this.getZ()._coord)*(_p.getZ()._coord - this.getZ()._coord));
     }
 
     /**

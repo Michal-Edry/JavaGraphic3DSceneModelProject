@@ -49,7 +49,7 @@ public class Sphere extends RadialGeometry {
          * getter for center
          * @return point3D
          */
-    public Point3D get_center() {
+    public Point3D getCenter() {
         return _center;
     }
     /**
@@ -79,8 +79,8 @@ public class Sphere extends RadialGeometry {
      */
     @Override
     public List<GeoPoint> findIntersections(Ray ray) {
-        Point3D p0 = ray.get_p0();
-        Vector v = ray.get_dir();
+        Point3D p0 = ray.getP0();
+        Vector v = ray.getDir();
         Vector u;
         try {
             u = _center.subtract(p0);   // p0 == _center

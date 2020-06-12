@@ -1,9 +1,7 @@
 package unittests;
 
 import elements.*;
-import geometries.Plane;
 import geometries.Sphere;
-import geometries.Triangle;
 import org.junit.Test;
 import primitives.*;
 import renderer.ImageWriter;
@@ -22,9 +20,10 @@ public class project1 {
         Scene scene = new Scene("Test scene");
         scene.setBackground(new Color(java.awt.Color.black));
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
-        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1),
+                new Vector(0, -1, 0)).setDOF(1).setAperture(5d).setNumOfRays(20).setFocalDistance(100));
         scene.setDistance(1000);
-        scene.setFocal_plane(new Plane(new Point3D(0, 0, 100), new Vector(0, 0, 1)));
+
 
         scene.addGeometries(
                 new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 15, new Point3D(140, -80, 500)),
@@ -64,9 +63,9 @@ public class project1 {
 
         ImageWriter imageWriter = new ImageWriter("project1", 200, 200, 600, 600);
         Render render = new Render(imageWriter, scene);
-        //render.set_depthOfField(1);
 
         render.renderImage();
         render.writeToImage();
     }
+
 }

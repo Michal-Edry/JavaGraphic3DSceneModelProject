@@ -44,7 +44,7 @@ public abstract class RadialGeometry extends Geometry {
      * getter for radius
      * @return double
      */
-    public double get_radius() {
+    public double getRadius() {
         return _radius;
     }
 

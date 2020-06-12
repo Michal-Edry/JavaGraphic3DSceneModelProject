@@ -131,8 +131,8 @@ public class Polygon extends Geometry {
         List<GeoPoint> intersections = _plane.findIntersections(ray);
         if (intersections == null) return null;
 
-        Point3D p0 = ray.get_p0();
-        Vector v = ray.get_dir();
+        Point3D p0 = ray.getP0();
+        Vector v = ray.getDir();
 
         Vector v1  = _vertices.get(1).subtract(p0);
         Vector v2 = _vertices.get(0).subtract(p0);

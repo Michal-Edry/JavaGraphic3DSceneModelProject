@@ -23,23 +23,7 @@ public class Scene {
     private double _distance;
     private List<LightSource> _lights = new LinkedList<LightSource>();
 
-    Plane focal_plane; //focal plane for depth of field
 
-    /**
-     * getter for focal plane
-     * @return Plane
-     */
-    public Plane getFocal_plane() {
-        return focal_plane;
-    }
-
-    /**
-     * setter for focal plane
-     * @param focal_plane Plane
-     */
-    public void setFocal_plane(Plane focal_plane) {
-        this.focal_plane = focal_plane;
-    }
 
     /**
      * constructor
