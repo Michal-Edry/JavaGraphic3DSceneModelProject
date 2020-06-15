@@ -91,19 +91,6 @@ public class Vector {
         return new Vector(new Point3D(this._head.getX()._coord - _v._head.getX()._coord, this._head.getY()._coord - _v._head.getY()._coord, this._head.getZ()._coord - _v._head.getZ()._coord));
     }
 
-    public Vector buildOrthogonal() {
-        double xa =Math.abs(_head.getX()._coord);
-        double ya =Math.abs(_head.getY()._coord);
-        double za =Math.abs(_head.getZ()._coord);
-
-        if (xa <= ya && xa <= za)
-            return new Vector(0, -1*_head.getZ()._coord, _head.getY()._coord).normalize();
-        else if (ya <= xa && ya <= za)
-            return new Vector(-1*_head.getZ()._coord, 0, _head.getX()._coord).normalize();
-        else
-            return new Vector(-1*_head.getY()._coord, _head.getX()._coord, 0).normalize();
-    }
-
 
     /**
      * adds a vector to our vector

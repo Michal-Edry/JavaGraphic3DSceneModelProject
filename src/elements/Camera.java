@@ -1,11 +1,8 @@
 package elements;
 
-import geometries.Intersectable;
-import geometries.Plane;
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Util;
-import primitives.Vector;
+import geometries.*;
+import primitives.*;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -192,106 +189,19 @@ public class Camera {
 
         return new Ray(_p0, Vij);
     }
-//
-//    /**
-//     * constructs a beam of rays that start at the view plane towards the focal point
-//     * @param nX amount of pixels on X
-//     * @param nY amount of pixels on y
-//     * @param j index j
-//     * @param i index i
-//     * @param screenDistance screen distance from camera
-//     * @param screenWidth screen width
-//     * @param screenHeight screen hight
-//    // * @param focalPlane focal plane
-//     * @return List of rays
-//     */
-//    public List<Ray> constructRaysBeamThroughPixel(int nX, int nY, double j, double i, double screenDistance,double screenWidth, double screenHeight){
-//
-//        double Rx = screenWidth / nX;//the length of pixel in X axis
-//        double Ry = screenHeight / nY;//the length of pixel in Y axis
-//
-//        Point3D Pc = new Point3D(_p0.add(_vTo.scale(screenDistance)));//new point from the camera to the screen
-//
-//        double yi = ((i - nY / 2d) * Ry + Ry / 2d);
-//        double xj = ((j - nX / 2d) * Rx + Rx / 2d);
-//
-//        //pc is the center of the view plane
-//        Point3D P = Pc.add(_vRight.scale(xj).subtract(_vUp.scale(yi)));
-//
-//        Ray ray = new Ray(P, P.subtract(_p0));
-//
-//        //find focal point
-//        List<Intersectable.GeoPoint> intersections = focalPlane.findIntersections(ray);
-//        if(intersections == null){
-//            throw new IllegalArgumentException("no intersections found");
-//        }
-//
-//        Point3D focal_point = intersections.get(0).get_point();
-//
-//        List<Ray> rays = new LinkedList<>();
-//
-//        rays.add(ray);
-//
-//
-//        // x coord middle of pixel/2 downwards
-//        Point3D tmp = new Point3D(P.get_x().get() - Rx / 2, P.get_y().get(), P.get_z().get());
-//        rays.add(new Ray(tmp,new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // y coord middle of pixel/2 downward
-//        tmp = new Point3D(P.get_x().get(), P.get_y().get() - Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // x coord middle of pixel/2 upwards
-//        tmp = new Point3D(P.get_x().get() + Rx / 2, P.get_y().get(), P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // y coord middle of pixel/2 upward
-//        tmp = new Point3D(P.get_x().get(), P.get_y().get() + Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // x coord middle of pixel/2 downwards  y coord middle of pixel/2 downward
-//        tmp = new Point3D(P.get_x().get() - Rx / 2, P.get_y().get() - Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // x coord middle of pixel/2 upwards  y coord middle of pixel/2 downward
-//        tmp = new Point3D(P.get_x().get() + Rx / 2, P.get_y().get() - Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // x coord middle of pixel/2 downwards    y coord middle of pixel/2 upward
-//        tmp = new Point3D(P.get_x().get() - Ry / 2, P.get_y().get() + Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        // x coord middle of pixel/2 upwards   y coord middle of pixel/2 upward
-//        tmp = new Point3D(P.get_x().get() + Ry / 2, P.get_y().get() + Ry / 2, P.get_z().get());
-//        rays.add(new Ray(tmp, new Vector(focal_point.subtract(tmp)).normalized()));
-//
-//        return rays;
-//    }
 
-//    public List<Ray> constructFocalRays(Point3D point)
-//    {
-//        Vector v = point.subtract(_p0);
-//        if (DOF == 0)
-//            return List.of(new Ray(_p0,v));
-//
-//        v.normalize();
-//        Point3D focalPoint = point.add(v.scale(_focus / _vTo.dotProduct(v)));
-//
-//        List<Ray> rays = new LinkedList<>();
-//        for(int i = DOF; i < 0; --i){
-//            double x = rand.nextDouble()*2-1;
-//            double y = Math.sqrt(1-x*x);
-//            Point3D p = point;
-//            double mult = (rand.nextDouble()-0.5)* aperture;
-//            if(!isZero(x))
-//                p.add(_vRight.scale(x*mult));
-//            if(!isZero(y))
-//                p.add(_vUp.scale(y*mult));
-//            rays.add(new Ray(p, focalPoint.subtract(p)));
-//        }
-//        return rays;
-//    }
 
+    /**
+     * constructs a beam of rays that start at the view plane towards the focal point
+     * @param nX amount of pixels on X
+     * @param nY amount of pixels on y
+     * @param j index j
+     * @param i index i
+     * @param screenDistance screen distance from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen hight
+     * @return List of Rays
+     */
     public List<Ray> constructRayBeam(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
         List<Ray> result = new LinkedList<>();
 
@@ -323,10 +233,8 @@ public class Camera {
         result.add(centerRay);
         Point3D focalPoint = pij.add(vToToFocal.scale(focalDistance / _vTo.dotProduct(vToToFocal)));
 
-        //double mult = (Rx + Ry)/2d * aperture;
         for (int k = 1; k < numOfRays; k++) {
             Point3D randPoint = new Point3D(pij);
-            //Point3D randPoint = pij;
             double x = rand.nextDouble() * 2 - 1;
             double y = Math.sqrt(1 - x * x);
             double mult = (rand.nextDouble()-0.5)*aperture;
@@ -338,26 +246,4 @@ public class Camera {
         }
         return result;
     }
-
-
-//    Vector vX = v.buildOrthogonal();
-//    Vector vY = v.crossProduct(vX);
-//
-//    double radius2 = radius * 2;
-//		for (int i = count - 1; i > 0; --i) {
-//        double x = rnd.nextDouble() * 2 - 1;
-//        double y = Math.sqrt(1 - x * x);
-//        Point3D tP = pc;
-//        double mult = (rnd.nextDouble() - 0.5) * radius2;
-//        if (!isZero(x))
-//            tP = tP.add(vX.scale(x * mult));
-//        if (!isZero(y))
-//            tP = tP.add(vY.scale(y * mult));
-//        Vector tV = tP.subtract(p);
-//        if (side * alignZero(n.dotProduct(tV)) > 0)
-//            rays.add(new Ray(p, tV));
-//    }
-//		return rays;
-//}
-
 }

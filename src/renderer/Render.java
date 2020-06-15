@@ -74,8 +74,7 @@ public class Render {
                         _imageWriter.writePixel(column, row, background.getColor());
                     } else {
                         GeoPoint closestPoint = getClosestPoint(intersectionPoints);
-                        primitives.Color color =calcColor(closestPoint, ray);
-                        //color = color.add(_scene.getAmbientLight().getIntensity());
+                        primitives.Color color = calcColor(closestPoint, ray);
                         _imageWriter.writePixel(column, row,color.getColor());
                     }
                 }
@@ -96,6 +95,13 @@ public class Render {
 
     }
 
+    /**
+     * help function: calculates the average color of the intersection points from all rays in a list
+     * @param background Color
+     * @param ray Ray
+     * @param rayBeam List<Ray>
+     * @return Color
+     */
     private primitives.Color calcolor(primitives.Color background, Ray ray, List<Ray> rayBeam) {
         GeoPoint closestPoint;
         primitives.Color averageColor = primitives.Color.BLACK;
@@ -426,17 +432,3 @@ public class Render {
     }
 
 }
-/*
-private Color calcColor(List<Ray> inRay) {
-        Color bkg = _scene.getBackground();
-        Color color = Color.BLACK;
-        for (Ray ray : inRay) {
-            GeoPoint gp = findClosestIntersection(ray);
-            color = color.add(gp == null ? bkg : calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, 1d));
-        }
-        color = color.add(_scene.getAmbientLight().getIntensity());
-        int size = inRay.size();
-        return (size == 1) ? color : color.reduce(size);
-    }
-
- */

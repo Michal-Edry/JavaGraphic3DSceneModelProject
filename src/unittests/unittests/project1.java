@@ -2,6 +2,7 @@ package unittests;
 
 import elements.*;
 import geometries.Sphere;
+import geometries.Triangle;
 import org.junit.Test;
 import primitives.*;
 import renderer.ImageWriter;
@@ -21,7 +22,7 @@ public class project1 {
         scene.setBackground(new Color(java.awt.Color.black));
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
         scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1),
-                new Vector(0, -1, 0)).setDOF(1).setAperture(5d).setNumOfRays(20).setFocalDistance(100));
+                new Vector(0, -1, 0)).setDOF(1).setAperture(5d).setNumOfRays(300).setFocalDistance(100));
         scene.setDistance(1000);
 
 
@@ -56,10 +57,16 @@ public class project1 {
                 new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 10, new Point3D(-70, 45, 200)),
                 new Sphere(new Color(java.awt.Color.blue), new Material(0.5, 0.5, 60, 0.6, 0), 20, new Point3D(-70, 70, 150)),
                 new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 13, new Point3D(-40, 50, 200)),
-                new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 26, new Point3D(-90, 95, 70))
+                new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 26, new Point3D(-90, 95, 70)),
+                new Sphere(new Color(102, 0, 51), new Material(0.5, 0.5, 60, 0.6, 0), 10, new Point3D(-80, -35, 70)),
+                new Triangle(new Color(java.awt.Color.BLUE), new Material(0.8,0.2,300), new Point3D(-110,-25,100), new Point3D(-60,-25,100),new Point3D(-80,-100,100))
         );
 
-        scene.addLights(new DirectionalLight(new Color(252, 212, 64), new Vector(0, 0, 1)));
+        scene.addLights(
+                new PointLight(new Color(252,212,64), new Point3D(0,0,-100),1,0.00001,0.00000001),
+                new PointLight(new Color(180, 50, 25), new Point3D(70, -100, 0), 1, 0.00001, 0.00000001),
+                new SpotLight(new Color(180, 130, 30), new Point3D(100, -80, 0), new Vector(1,-1,1),1, 0.00001, 0.00000001)
+                );
 
         ImageWriter imageWriter = new ImageWriter("project1", 200, 200, 600, 600);
         Render render = new Render(imageWriter, scene);
@@ -67,5 +74,4 @@ public class project1 {
         render.renderImage();
         render.writeToImage();
     }
-
 }
