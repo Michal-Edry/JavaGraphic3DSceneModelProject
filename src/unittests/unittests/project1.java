@@ -69,9 +69,10 @@ public class project1 {
                 );
 
         ImageWriter imageWriter = new ImageWriter("project1", 200, 200, 600, 600);
-        Render render = new Render(imageWriter, scene);
+        Render render = new Render(imageWriter, scene).setMultithreading(3).setDebugPrint();
 
         render.renderImage();
         render.writeToImage();
     }
 }
+////
