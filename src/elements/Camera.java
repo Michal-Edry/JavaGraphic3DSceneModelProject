@@ -199,7 +199,7 @@ public class Camera {
      * @param i index i
      * @param screenDistance screen distance from camera
      * @param screenWidth screen width
-     * @param screenHeight screen hight
+     * @param screenHeight screen height
      * @return List of Rays
      */
     public List<Ray> constructRayBeam(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
@@ -244,6 +244,77 @@ public class Camera {
                 randPoint = randPoint.add(_vUp.scale(y * mult));
             result.add(new Ray(randPoint, focalPoint.subtract(randPoint).normalized()));
         }
+        return result;
+    }
+
+    /**
+     * calculates the center ray and 4 corner rays of the aperture and the sub pixel
+     * @param nX amount of pixels on X
+     * @param nY amount of pixels on y
+     * @param j index j
+     * @param i index i
+     * @param screenDistance screen distance from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen height
+     * @param reduce reduce the pixel into a sub pixel
+     * @param center center of sub pixel
+     * @return List of Rays
+     */
+    public List<Ray> constructAdaptiveRayBeamThroughPixel(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight, double reduce, Point3D center){
+        List<Ray> result = new LinkedList<>();
+
+        Point3D Pc = _p0.add(_vTo.scale(screenDistance)); //center point
+
+        double Ry = screenHeight / nY;
+        double Rx = screenWidth / nX;
+
+        double yi = ((i - nY / 2d) * Ry + Ry / 2d);
+        double xj = ((j - nX / 2d) * Rx + Rx / 2d);
+
+        Point3D pij = Pc;
+
+        if (!isZero(xj)) {
+            pij = pij.add(_vRight.scale(xj));
+        }
+        if (!isZero(yi)) {
+            pij = pij.subtract(_vUp.scale(yi)); // Pij.add(_vUp.scale(-yi))
+        }
+
+        Vector vToToFocal = pij.subtract(_p0).normalize();
+
+
+        Point3D middle = pij;
+        if(!center.equals(Point3D.ZERO)){ //if center is sub pixel use it as the center
+            middle = center;
+        }
+
+        Point3D focalPoint = pij.add(vToToFocal.scale(focalDistance / _vTo.dotProduct(vToToFocal)));
+
+        //result.add(new Ray(middle, focalPoint.subtract(middle)));// adds center ray
+        result.add(new Ray(middle, vToToFocal));// adds center ray
+
+        if (numOfRays == 1 || isZero(aperture)) {
+            return result;
+        }
+
+        double move = aperture/reduce; // the amount we need to move around the center point to get to the corners
+
+        //corner #1
+        Point3D temp = new Point3D(middle.getX().get() - move, middle.getY().get() - move, middle.getZ().get());
+        result.add(new Ray(temp,(focalPoint.subtract(temp)).normalized()));
+
+        //corner #2
+        temp = new Point3D(middle.getX().get() - move, middle.getY().get() + move, middle.getZ().get());
+        result.add(new Ray(temp,focalPoint.subtract(temp).normalized()));
+
+        //corner #3
+        temp = new Point3D(middle.getX().get() + move, middle.getY().get() - move, middle.getZ().get());
+        result.add(new Ray(temp,new Vector(focalPoint.subtract(temp)).normalized()));
+
+        //corner #4
+        temp = new Point3D(middle.getX().get() + move, middle.getY().get() + move, middle.getZ().get());
+        result.add(new Ray(temp,new Vector(focalPoint.subtract(temp)).normalized()));
+
         return result;
     }
 }

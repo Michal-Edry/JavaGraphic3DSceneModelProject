@@ -12,26 +12,22 @@ public class Vector {
      * @throws IllegalArgumentException
      */
     public Vector(Point3D _head) {
-        this._head = new Point3D(_head);
         if (_head.equals(Point3D.ZERO))
             throw new IllegalArgumentException("Illegal input");
-    }
+        this._head = new Point3D(_head);
+     }
 
     /**
      * constructor: gets 3 coordinates
-     * @param _x coordinate x
-     * @param _y coordinate y
-     * @param _z coordinate z
-     * @throws IllegalArgumentException
+     * @param coord_x coordinate x
+     * @param coord_y coordinate y
+     * @param coord_z coordinate z
+     *  throws IllegalArgumentException
      */
-    public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
-        Point3D point=new Point3D(new Coordinate(_x), new Coordinate(_y), new Coordinate(_z));
-        if (point.equals(Point3D.ZERO))
-        {
-            throw new IllegalArgumentException("The point can't be zero");
-        }
-        _head=point;
+    public Vector(Coordinate coord_x, Coordinate coord_y, Coordinate coord_z) {
+        this(coord_x._coord, coord_y._coord, coord_z._coord);
     }
+
     /**
      * constructor: gets 3 doubles
      * @param _x double x
@@ -50,7 +46,7 @@ public class Vector {
      * @param _v vector
      */
     public Vector(Vector _v) {
-        this._head = new Point3D(_v.getHead());
+        this._head = new Point3D(_v._head);
     }
 
     /**
@@ -88,7 +84,7 @@ public class Vector {
      * @return a new vector
      */
     public Vector subtract(Vector _v) {
-        return new Vector(new Point3D(this._head.getX()._coord - _v._head.getX()._coord, this._head.getY()._coord - _v._head.getY()._coord, this._head.getZ()._coord - _v._head.getZ()._coord));
+        return new Vector(this._head.getX()._coord - _v._head.getX()._coord, this._head.getY()._coord - _v._head.getY()._coord, this._head.getZ()._coord - _v._head.getZ()._coord);
     }
 
 
@@ -98,7 +94,7 @@ public class Vector {
      * @return a vector
      */
     public Vector add(Vector _v) {
-        return new Vector(new Point3D(_v._head.getX()._coord + this._head.getX()._coord, _v._head.getY()._coord + this._head.getY()._coord, _v._head.getZ()._coord + this._head.getZ()._coord));
+        return new Vector(_v._head.getX()._coord + this._head.getX()._coord, _v._head.getY()._coord + this._head.getY()._coord, _v._head.getZ()._coord + this._head.getZ()._coord);
     }
 
     /**
@@ -107,7 +103,7 @@ public class Vector {
      * @return a multiplied vector
      */
     public Vector scale(double _a) {
-        return new Vector(new Point3D(this._head.getX()._coord * _a, this._head.getY()._coord * _a, this._head.getZ()._coord * _a));
+        return new Vector(this._head.getX()._coord * _a, this._head.getY()._coord * _a, this._head.getZ()._coord * _a);
     }
 
     /**
@@ -125,7 +121,7 @@ public class Vector {
      * @return a vector
      */
     public Vector crossProduct(Vector _v){
-        return new Vector(new Point3D(this._head.getY()._coord*_v._head.getZ()._coord - this._head.getZ()._coord*_v._head.getY()._coord,this._head.getZ()._coord*_v._head.getX()._coord - this._head.getX()._coord*_v._head.getZ()._coord, this._head.getX()._coord*_v._head.getY()._coord - this._head.getY()._coord*_v._head.getX()._coord));
+        return new Vector(this._head.getY()._coord*_v._head.getZ()._coord - this._head.getZ()._coord*_v._head.getY()._coord,this._head.getZ()._coord*_v._head.getX()._coord - this._head.getX()._coord*_v._head.getZ()._coord, this._head.getX()._coord*_v._head.getY()._coord - this._head.getY()._coord*_v._head.getX()._coord);
     }
 
     /**
@@ -146,7 +142,7 @@ public class Vector {
     }
 
     /**
-     * normalizes the vector
+     * normalizes the vector (changing the head source)
      * @return our vector after changed
      */
     public Vector normalize()

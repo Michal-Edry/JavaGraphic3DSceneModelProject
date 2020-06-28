@@ -58,8 +58,9 @@ public class Polygon extends Geometry {
      *                                  <li>Three consequent vertices lay in the
      *                                  same line (180&#176; angle between two
      *                                  consequent edges)
-     *                                  <li>The polygon is concave (not convex></li>
+     *                                  <li>The polygon is concave (not convex)
      *                                  </ul>
+     *
      */
     public Polygon(Color _emission, Material _material, Point3D... vertices) {
         super(_emission, _material);

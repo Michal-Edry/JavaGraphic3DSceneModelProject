@@ -172,4 +172,23 @@ public class Color {
         return new Color(r, g, b);
     }
 
+//    /**
+//     * checks if 2 colors are similar
+//     * @param color Color
+//     * @return boolean
+//     */
+//    public boolean equals(Color color){
+//        if(this.equals(Color.BLACK) && color.equals(Color.BLACK))
+//            return true;
+//        if(this.equals(Color.BLACK))
+//            _r = _r + 0.1;
+//        if (color.equals(Color.BLACK))
+//            color._r = color._r + 0.1;
+//        Point3D p1 = new Point3D(_r,_g,_b);
+//        Point3D p2 = new Point3D(color._r, color._g, color._b);
+//        double distance = p1.distance(p2);
+//        if(distance < 10)
+//            return true;
+//        return false;
+//    }
 }

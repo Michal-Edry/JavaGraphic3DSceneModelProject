@@ -12,18 +12,18 @@ public class Point3D {
 
     /**
      * Constructor: gets 3 coordinates
+     *
      * @param _x coordinate x
      * @param _y coordinate y
      * @param _z coordinate z
      */
     public Point3D(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this._x = new Coordinate(_x);
-        this._y = new Coordinate(_y);
-        this._z = new Coordinate(_z);
+        this(_x._coord, _y._coord, _z._coord);
     }
 
     /**
      * Constructor: gets 3 doubles
+     *
      * @param _x coordinate x
      * @param _y coordinate y
      * @param _z coordinate z
@@ -36,30 +36,37 @@ public class Point3D {
 
     /**
      * copy constructor: gets a point
+     *
      * @param _p Point3D
      */
     public Point3D(Point3D _p) {
-        this._x = new Coordinate(_p.getX());
-        this._y = new Coordinate(_p.getY());
-        this._z = new Coordinate(_p.getZ());
+        this(_p._x._coord,_p._y._coord,_p._z._coord);
+//        this._x = new Coordinate(_p.getX());
+//        this._y = new Coordinate(_p.getY());
+//        this._z = new Coordinate(_p.getZ());
     }
 
     /**
      * getter for x
+     *
      * @return coordinate x
      */
     public Coordinate getX() {
         return _x;
     }
+
     /**
      * getter for y
+     *
      * @return coordinate y
      */
     public Coordinate getY() {
         return _y;
     }
+
     /**
      * getter for z
+     *
      * @return coordinate z
      */
     public Coordinate getZ() {
@@ -68,6 +75,7 @@ public class Point3D {
 
     /**
      * checks if 2 3D points are equal
+     *
      * @param o gets a 3D point
      * @return if the 3D piont are equal
      */
@@ -81,6 +89,7 @@ public class Point3D {
 
     /**
      * to string
+     *
      * @return a string with the point details
      */
     @Override
@@ -91,6 +100,7 @@ public class Point3D {
 
     /**
      * subtracts a vector feom a point3D
+     *
      * @param v Vector v
      * @return Point3D
      */
@@ -99,39 +109,44 @@ public class Point3D {
                 this._y._coord - v._head._y._coord,
                 this._z._coord - v._head._z._coord);
     }
+
     /**
      * subtracts 2 3D points and returns a vector that starts with the point that called the func
+     *
      * @param _p gets a 3D point
      * @return a vector
      */
-    public Vector subtract(Point3D _p){
-        return new Vector(new Point3D(this._x._coord - _p.getX()._coord ,this.getY()._coord - _p.getY()._coord,this.getZ()._coord - _p.getZ()._coord));
+    public Vector subtract(Point3D _p) {
+        return new Vector(this._x._coord - _p.getX()._coord, this.getY()._coord - _p.getY()._coord, this.getZ()._coord - _p.getZ()._coord);
     }
 
     /**
      * adds a vector to a 3D point
+     *
      * @param _v gets a vector
      * @return a 3D point
      */
-    public Point3D add(Vector _v){
+    public Point3D add(Vector _v) {
         return new Point3D(this.getX()._coord + _v.getHead().getX()._coord, this.getY()._coord + _v.getHead().getY()._coord, this.getZ()._coord + _v.getHead().getZ()._coord);
     }
 
     /**
      * calculates the squared distance between 2 points
+     *
      * @param _p gets a 3D point
      * @return the squared distance
      */
-    public double distanceSquared(Point3D _p){
-        return ((_p.getX()._coord - this.getX()._coord)*(_p.getX()._coord - this.getX()._coord) + (_p.getY()._coord - this.getY()._coord)*(_p.getY()._coord - this.getY()._coord) + (_p.getZ()._coord - this.getZ()._coord)*(_p.getZ()._coord - this.getZ()._coord));
+    public double distanceSquared(Point3D _p) {
+        return ((_p.getX()._coord - this.getX()._coord) * (_p.getX()._coord - this.getX()._coord) + (_p.getY()._coord - this.getY()._coord) * (_p.getY()._coord - this.getY()._coord) + (_p.getZ()._coord - this.getZ()._coord) * (_p.getZ()._coord - this.getZ()._coord));
     }
 
     /**
      * returns the distance between 2 3D points
+     *
      * @param _p gets a 3D point
      * @return the distance
      */
-    public double distance(Point3D _p){
+    public double distance(Point3D _p) {
         return Math.sqrt(this.distanceSquared(_p));
     }
 }

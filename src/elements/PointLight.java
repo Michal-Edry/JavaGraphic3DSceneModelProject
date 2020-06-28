@@ -17,6 +17,7 @@ public class PointLight extends Light implements LightSource {
      */
     public PointLight(Color _intensity, Point3D _position, double _kC, double _kL, double _kQ) {
         super(_intensity);
+        //this._position = new Point3D(position);
         this._position = _position;
         this._kC = _kC;
         this._kL = _kL;

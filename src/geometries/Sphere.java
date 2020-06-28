@@ -74,7 +74,7 @@ public class Sphere extends RadialGeometry {
 
     /**
      * gets a Ray and returns all the intersection points.
-     * @param ray
+     * @param ray ray
      * @return List of Point3D
      */
     @Override

@@ -18,10 +18,8 @@ public class Ray {
      * @param _dir Vector
      */
     public Ray(Point3D _p0, Vector _dir) {
-        if (_dir.length() != 1)
-            _dir.normalize();
         this._p0 = new Point3D(_p0);
-        this._dir = new Vector(_dir);
+        this._dir = _dir.normalized();
     }
 
     /**
@@ -31,7 +29,7 @@ public class Ray {
      */
     public Ray(Ray _ray) {
         this._p0 = new Point3D(_ray.getP0());
-        this._dir = new Vector(_ray.getDir());
+        this._dir = _ray.getDir();
     }
 
     /**
@@ -42,9 +40,9 @@ public class Ray {
      */
     public Ray(Point3D point, Vector direction, Vector normal) {
         //point + normal.scale(±DELTA)
-        _dir = new Vector(direction).normalized();
+        _dir = direction.normalized();
 
-        double nv = normal.dotProduct(direction);
+        double nv = normal.dotProduct(_dir);
 
         Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
         _p0 = point.add(normalDelta);
@@ -66,7 +64,7 @@ public class Ray {
      * @return a vector
      */
     public Vector getDir() {
-        return _dir.normalized();
+        return _dir;
     }
 
 
@@ -96,7 +94,7 @@ public class Ray {
     }
 
     /**
-     * @param length
+     * @param length orech
      * @return new Point3D
      */
     public Point3D getPoint(double length) {

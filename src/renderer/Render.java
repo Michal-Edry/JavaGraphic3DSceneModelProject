@@ -27,6 +27,8 @@ public class Render {
 
     private int _depthOfField;
 
+    private int _adaptiveSampling = 0;
+
     private int _threads = 1;
     private final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
     private boolean _print = false; // printing progress percentage
@@ -54,7 +56,112 @@ public class Render {
         this._depthOfField = _depthOfField;
     }
 
+    /**
+     * setter of _adaptiveSampling
+     * @param adaptiveSampling
+     */
+    public void setAdaptiveSampling(int adaptiveSampling) {
+        _adaptiveSampling = adaptiveSampling;
+    }
 
+    /**
+     * recursive function that calculates the color of each pixel with adaptive super sampling
+     * @param nx amount of pixels on X
+     * @param ny amount of pixels on y
+     * @param distance screen distance from camera
+     * @param width screen width
+     * @param height screen height
+     * @param pixel pixel
+     * @param level recursive level
+     * @param reduce reduce the pixel into a sub pixel
+     * @param center center of sub pixel
+     * @return Color of a pixel
+     */
+    public primitives.Color adaptiveSamplingRecursion(int nx, int ny, double distance, double width, double height, Pixel pixel, int level, double reduce, Point3D center){
+        Camera camera = _scene.getCamera();
+
+        List<Ray> rays = camera.constructAdaptiveRayBeamThroughPixel(nx,ny,pixel.col,pixel.row,distance,width,height,reduce,center);
+
+        primitives.Color centerColor;
+        primitives.Color color1;
+        primitives.Color color2;
+        primitives.Color color3;
+        primitives.Color color4;
+
+        //calculates ray intersection color
+        Ray rayCenter = rays.get(0);
+        if (findClosestIntersection(rayCenter) == null)
+            centerColor = _scene.getBackground();
+        else
+            centerColor = calcColor(findClosestIntersection(rayCenter),rayCenter);
+
+        Ray ray1 = rays.get(1);
+        if (findClosestIntersection(ray1) == null)
+            color1 = _scene.getBackground();
+        else
+            color1 = calcColor(findClosestIntersection(ray1),ray1);
+
+        Ray ray2 = rays.get(2);
+        if (findClosestIntersection(ray2) == null)
+            color2 = _scene.getBackground();
+        else
+            color2 = calcColor(findClosestIntersection(ray2),ray2);
+
+        Ray ray3 = rays.get(3);
+        if (findClosestIntersection(ray3) == null)
+            color3 = _scene.getBackground();
+        else
+            color3 = calcColor(findClosestIntersection(ray3),ray3);
+
+        Ray ray4 = rays.get(4);
+        if (findClosestIntersection(ray4) == null)
+            color4 = _scene.getBackground();
+        else
+            color4 = calcColor(findClosestIntersection(ray4),ray4);
+
+        if(level == 0){ //end of recursion
+            centerColor = centerColor.add(color1,color2,color3,color4);
+            return centerColor.reduce(5);
+        }
+
+        //all colors are equal
+        if(centerColor.equals(color1) && centerColor.equals(color2) && centerColor.equals(color3) && centerColor.equals(color4))
+            return centerColor;
+        else {//compares each color with center color, if not equal will call recursive function for sub pixel
+            if(!color1.equals(centerColor)) {
+                double x = (rayCenter.getP0().getX().get()+ray1.getP0().getX().get())/2d;
+                double y = (rayCenter.getP0().getY().get()+ray1.getP0().getY().get())/2d;
+                double z = (rayCenter.getP0().getZ().get()+ray1.getP0().getZ().get())/2d;
+                Point3D p1 = new Point3D(x,y,z);
+                color1 = adaptiveSamplingRecursion(nx, ny, distance, width, height, pixel, level - 1, reduce * 2, p1);
+            }
+            if(!color2.equals(centerColor)) {
+                double x = (rayCenter.getP0().getX().get()+ray2.getP0().getX().get())/2d;
+                double y = (rayCenter.getP0().getY().get()+ray2.getP0().getY().get())/2d;
+                double z = (rayCenter.getP0().getZ().get()+ray2.getP0().getZ().get())/2d;
+                Point3D p2 = new Point3D(x,y,z);
+                color2 = adaptiveSamplingRecursion(nx, ny, distance, width, height, pixel, level - 1, reduce * 2, p2);
+            }
+            if(!color3.equals(centerColor)) {
+                double x = (rayCenter.getP0().getX().get()+ray3.getP0().getX().get())/2d;
+                double y = (rayCenter.getP0().getY().get()+ray3.getP0().getY().get())/2d;
+                double z = (rayCenter.getP0().getZ().get()+ray3.getP0().getZ().get())/2d;
+                Point3D p3 = new Point3D(x,y,z);
+                color3 = adaptiveSamplingRecursion(nx, ny, distance, width, height, pixel, level - 1, reduce * 2, p3);
+            }
+            if(!color4.equals(centerColor)) {
+                double x = (rayCenter.getP0().getX().get()+ray4.getP0().getX().get())/2d;
+                double y = (rayCenter.getP0().getY().get()+ray4.getP0().getY().get())/2d;
+                double z = (rayCenter.getP0().getZ().get()+ray4.getP0().getZ().get())/2d;
+                Point3D p4 = new Point3D(x,y,z);
+                color4 = adaptiveSamplingRecursion(nx, ny, distance, width, height, pixel, level - 1, reduce * 2, p4);
+            }
+        }
+
+        centerColor = centerColor.add(color1,color2,color3,color4);
+        return centerColor.reduce(5);
+
+    }
 
     /**
      * Filling the buffer according to the geometries that are in the scene.
@@ -89,7 +196,10 @@ public class Render {
                             resultingColor = getPixelRayColor(camera, distance, Nx, Ny, width, height, pixel);
                         }
                         else {
-                            resultingColor = getPixelRaysBeamColor(camera, distance, Nx, Ny, width, height, pixel);
+                            if(_adaptiveSampling == 0)
+                                resultingColor = getPixelRaysBeamColor(camera, distance, Nx, Ny, width, height, pixel);
+                            else
+                                resultingColor = adaptiveSamplingRecursion(Nx, Ny, distance,  width, height, pixel,4,2,Point3D.ZERO);
                         }
                         _imageWriter.writePixel(pixel.col, pixel.row, resultingColor.getColor());
                     }
@@ -115,6 +225,17 @@ public class Render {
         }
     }
 
+    /**
+     * gets pixel color for ray
+     * @param camera Camera
+     * @param distance double
+     * @param nx int
+     * @param ny int
+     * @param width double
+     * @param height double
+     * @param pixel Pixel
+     * @return Color
+     */
     private primitives.Color getPixelRayColor(Camera camera, double distance, int nx, int ny, double width, double height, Pixel pixel) {
         Ray ray = camera.constructRayThroughPixel(nx, ny, pixel.col, pixel.row, distance, width, height);
         GeoPoint closestPoint = findClosestIntersection(ray);
@@ -124,20 +245,32 @@ public class Render {
         }
         return resultingColor;
     }
+
+    /**
+     * gets pixel color for ray beam
+     * @param camera Camera
+     * @param distance double
+     * @param nx int
+     * @param ny int
+     * @param width double
+     * @param height double
+     * @param pixel Pixel
+     * @return Color
+     */
     private primitives.Color getPixelRaysBeamColor(Camera camera, double distance, int nx, int ny, double width, double height, Pixel pixel) {
         Ray ray = camera.constructRayThroughPixel(nx, ny, pixel.col, pixel.row, distance, width, height);
         List<Ray> rayBeam = camera.constructRayBeam(nx, ny, pixel.col, pixel.row, distance, width, height);
         primitives.Color averageColor = calcolor(_scene.getBackground(), ray, rayBeam);
-        //averageColor = averageColor.add(_scene.getAmbientLight().getIntensity());
         return averageColor;
     }
+
 
         /**
          * help function: calculates the average color of the intersection points from all rays in a list
          *
          * @param background Color
          * @param ray        Ray
-         * @param rayBeam    List<Ray>
+         * @param rayBeam    List of Ray
          * @return Color
          */
     private primitives.Color calcolor(primitives.Color background, Ray ray, List<Ray> rayBeam) {
@@ -222,7 +355,7 @@ public class Render {
      * @return Ray
      */
     private Ray constructReflectedRay(Point3D pointGeo, Ray inRay, Vector n) {
-        //𝒓=𝒗−𝟐∙𝒗∙𝒏∙𝒏
+        //r = v-2.(v.n).n
         Vector v = inRay.getDir();
         double vn = v.dotProduct(n);
         if (vn == 0) {
@@ -457,7 +590,7 @@ public class Render {
      * @param light    LightSource
      * @param l        Vector
      * @param n        Vector
-     * @param geopoint GeoPiont
+     * @param geopoint GeoPoint
      * @return double
      */
     private double transparency(LightSource light, Vector l, Vector n, GeoPoint geopoint) {
@@ -485,7 +618,7 @@ public class Render {
     /**
      * Pixel is an internal helper class whose objects are associated with a Render object that
      * they are generated in scope of. It is used for multithreading in the Renderer and for follow up
-     * its progress.<br/>
+     * its progress.<br>
      * There is a main follow up object and several secondary objects - one in each thread.
      */
     private class Pixel {
@@ -521,7 +654,7 @@ public class Render {
         /**
          * Internal function for thread-safe manipulating of main follow up Pixel object - this function is
          * critical section for all the threads, and main Pixel object data is the shared data of this critical
-         * section.<br/>
+         * section.<br>
          * The function provides next pixel number each call.
          *
          * @param target target secondary Pixel object to copy the row/column of the next pixel
