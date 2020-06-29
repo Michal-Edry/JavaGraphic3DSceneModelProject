@@ -37,7 +37,6 @@ public class Render {
 
     /**
      * constructor
-     *
      * @param imageWriter ImageWriter
      * @param scene       Scene
      */
@@ -49,7 +48,6 @@ public class Render {
 
     /**
      * setter of _depthOfField
-     *
      * @param _depthOfField int
      */
     public void setDepthOfField(int _depthOfField) {
@@ -199,7 +197,7 @@ public class Render {
                             if(_adaptiveSampling == 0)
                                 resultingColor = getPixelRaysBeamColor(camera, distance, Nx, Ny, width, height, pixel);
                             else
-                                resultingColor = adaptiveSamplingRecursion(Nx, Ny, distance,  width, height, pixel,4,2,Point3D.ZERO);
+                                resultingColor = adaptiveSamplingRecursion(Nx, Ny, distance,  width, height, pixel,3,2,Point3D.ZERO);
                         }
                         _imageWriter.writePixel(pixel.col, pixel.row, resultingColor.getColor());
                     }
@@ -265,14 +263,13 @@ public class Render {
     }
 
 
-        /**
-         * help function: calculates the average color of the intersection points from all rays in a list
-         *
-         * @param background Color
-         * @param ray        Ray
-         * @param rayBeam    List of Ray
-         * @return Color
-         */
+    /**
+     * help function: calculates the average color of the intersection points from all rays in a list
+     * @param background Color
+     * @param ray        Ray
+     * @param rayBeam    List of Ray
+     * @return Color
+     */
     private primitives.Color calcolor(primitives.Color background, Ray ray, List<Ray> rayBeam) {
         GeoPoint closestPoint;
         primitives.Color averageColor = primitives.Color.BLACK;
@@ -291,7 +288,6 @@ public class Render {
 
     /**
      * checks a sign of a value
-     *
      * @param val double
      * @return boolean
      */
@@ -301,7 +297,6 @@ public class Render {
 
     /**
      * Calculate Specular component of light reflection.
-     *
      * @param ks         specular component coef
      * @param l          direction from light to point
      * @param n          normal to surface at the point
@@ -409,9 +404,9 @@ public class Render {
      */
     public void printGrid(int interval, Color colorsep) {
         double rows = this._imageWriter.getNx();
-        double collumns = _imageWriter.getNy();
+        double columns = _imageWriter.getNy();
         //Writing the lines.
-        for (int col = 0; col < collumns; col++) {
+        for (int col = 0; col < columns; col++) {
             for (int row = 0; row < rows; row++) {
                 if (col % interval == 0 || row % interval == 0) {
                     _imageWriter.writePixel(row, col, colorsep);

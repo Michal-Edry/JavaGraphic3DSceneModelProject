@@ -117,7 +117,7 @@ public class Point3D {
      * @return a vector
      */
     public Vector subtract(Point3D _p) {
-        return new Vector(this._x._coord - _p.getX()._coord, this.getY()._coord - _p.getY()._coord, this.getZ()._coord - _p.getZ()._coord);
+        return new Vector(this._x._coord - _p._x._coord, this._y._coord - _p._y._coord, this._z._coord - _p._z._coord);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Point3D {
      * @return a 3D point
      */
     public Point3D add(Vector _v) {
-        return new Point3D(this.getX()._coord + _v.getHead().getX()._coord, this.getY()._coord + _v.getHead().getY()._coord, this.getZ()._coord + _v.getHead().getZ()._coord);
+        return new Point3D(this._x._coord + _v._head._x._coord, this._y._coord + _v._head._y._coord, this._z._coord + _v._head._z._coord);
     }
 
     /**
@@ -137,7 +137,7 @@ public class Point3D {
      * @return the squared distance
      */
     public double distanceSquared(Point3D _p) {
-        return ((_p.getX()._coord - this.getX()._coord) * (_p.getX()._coord - this.getX()._coord) + (_p.getY()._coord - this.getY()._coord) * (_p.getY()._coord - this.getY()._coord) + (_p.getZ()._coord - this.getZ()._coord) * (_p.getZ()._coord - this.getZ()._coord));
+        return ((_p._x._coord - this._x._coord) * (_p._x._coord - this._x._coord) + (_p._y._coord - this._y._coord) * (_p._y._coord - this._y._coord) + (_p._z._coord - this._z._coord) * (_p._z._coord - this._z._coord));
     }
 
     /**

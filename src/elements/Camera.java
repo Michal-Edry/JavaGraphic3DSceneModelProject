@@ -231,8 +231,11 @@ public class Camera {
 
         Ray centerRay = new Ray(pij, vToToFocal);
         result.add(centerRay);
+
+        //calculates the focal point
         Point3D focalPoint = pij.add(vToToFocal.scale(focalDistance / _vTo.dotProduct(vToToFocal)));
 
+        //calculates random rays in aperture
         for (int k = 1; k < numOfRays; k++) {
             Point3D randPoint = new Point3D(pij);
             double x = rand.nextDouble() * 2 - 1;
