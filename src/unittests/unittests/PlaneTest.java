@@ -39,12 +39,12 @@ public class PlaneTest {
         ray = new Ray(new Point3D(-1,-1,-1),new Vector(1,1,2));
         result = plane.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray intersects the plane", new Point3D(0,0,1),result.get(0));
+        assertEquals("Ray intersects the plane", new Point3D(0,0,1),result.get(0).getPoint());
 
         ray = new Ray(new Point3D(-1,-1,-1),new Vector(1,3,2));
         result = plane.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray intersects the plane", new Point3D((double)-1/3,1,(double)1/3),result.get(0));
+        assertEquals("Ray intersects the plane", new Point3D((double)-1/3,1,(double)1/3),result.get(0).getPoint());
 
         //TC02: Ray does not intersect the plane (0 points)
         ray = new Ray(new Point3D(1,1,1),new Vector(1,3,2));
@@ -69,7 +69,7 @@ public class PlaneTest {
         ray = new Ray(new Point3D(-1,-1,-1),new Vector(1,1,1));
         result = plane.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts before the plane",new Point3D((double)1/3,(double)1/3,(double)1/3),result.get(0));
+        assertEquals("Ray starts before the plane",new Point3D((double)1/3,(double)1/3,(double)1/3),result.get(0).getPoint());
 
             //TC06: Ray starts in the plane (0 points)
         ray = new Ray(new Point3D((double)1/3,(double)1/3,(double)1/3),new Vector(new Point3D(1,1,1)));

@@ -105,7 +105,7 @@ public class PolygonTests {
         ray = new Ray(new Point3D(0.5,0.5,-1),new Vector(0,0,1));
         result = polygon.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Inside polygon",new Point3D(0.5,0.5,0.5), result.get(0));
+        assertEquals("Inside polygon",new Point3D(0.5,0.5,0.5), result.get(0).getPoint());
 
         //TC02: Outside against edge (0 points)
         ray = new Ray(new Point3D(2,0.5,-1), new Vector(0,0,1));

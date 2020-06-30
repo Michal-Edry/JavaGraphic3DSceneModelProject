@@ -25,9 +25,9 @@ public class Render {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    private int _depthOfField;
+    private int _depthOfField;//if !=0 use DOF
 
-    private int _adaptiveSampling = 0;
+    private int _adaptiveSampling = 0;// if !=0 use ASS
 
     private int _threads = 1;
     private final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
@@ -78,46 +78,49 @@ public class Render {
     public primitives.Color adaptiveSamplingRecursion(int nx, int ny, double distance, double width, double height, Pixel pixel, int level, double reduce, Point3D center){
         Camera camera = _scene.getCamera();
 
+        //gets rays for the center and 4 corners
         List<Ray> rays = camera.constructAdaptiveRayBeamThroughPixel(nx,ny,pixel.col,pixel.row,distance,width,height,reduce,center);
 
+        //Color for each ray intersection
         primitives.Color centerColor;
         primitives.Color color1;
         primitives.Color color2;
         primitives.Color color3;
         primitives.Color color4;
 
-        //calculates ray intersection color
+        //calculates ray intersection color:
+        //#center color
         Ray rayCenter = rays.get(0);
         if (findClosestIntersection(rayCenter) == null)
             centerColor = _scene.getBackground();
         else
             centerColor = calcColor(findClosestIntersection(rayCenter),rayCenter);
-
+        //#corner1 color
         Ray ray1 = rays.get(1);
         if (findClosestIntersection(ray1) == null)
             color1 = _scene.getBackground();
         else
             color1 = calcColor(findClosestIntersection(ray1),ray1);
-
+        //#corner2 color
         Ray ray2 = rays.get(2);
         if (findClosestIntersection(ray2) == null)
             color2 = _scene.getBackground();
         else
             color2 = calcColor(findClosestIntersection(ray2),ray2);
-
+        //#corner3 color
         Ray ray3 = rays.get(3);
         if (findClosestIntersection(ray3) == null)
             color3 = _scene.getBackground();
         else
             color3 = calcColor(findClosestIntersection(ray3),ray3);
-
+        //#corner4 color
         Ray ray4 = rays.get(4);
         if (findClosestIntersection(ray4) == null)
             color4 = _scene.getBackground();
         else
             color4 = calcColor(findClosestIntersection(ray4),ray4);
 
-        if(level == 0){ //end of recursion
+        if(level == 0){ //end of recursion: calculates the average of all colors
             centerColor = centerColor.add(color1,color2,color3,color4);
             return centerColor.reduce(5);
         }
@@ -155,10 +158,9 @@ public class Render {
                 color4 = adaptiveSamplingRecursion(nx, ny, distance, width, height, pixel, level - 1, reduce * 2, p4);
             }
         }
-
+        //calculates the average of all colors
         centerColor = centerColor.add(color1,color2,color3,color4);
         return centerColor.reduce(5);
-
     }
 
     /**
@@ -190,13 +192,13 @@ public class Render {
                     Pixel pixel = new Pixel();
                     primitives.Color resultingColor;
                     while (thePixel.nextPixel(pixel)) {
-                        if (_depthOfField == 0){
+                        if (_depthOfField == 0){//doesn't use DOF
                             resultingColor = getPixelRayColor(camera, distance, Nx, Ny, width, height, pixel);
                         }
-                        else {
-                            if(_adaptiveSampling == 0)
+                        else {//use DOF
+                            if(_adaptiveSampling == 0)//use DOF without ASS
                                 resultingColor = getPixelRaysBeamColor(camera, distance, Nx, Ny, width, height, pixel);
-                            else
+                            else//use DOF with ASS
                                 resultingColor = adaptiveSamplingRecursion(Nx, Ny, distance,  width, height, pixel,3,2,Point3D.ZERO);
                         }
                         _imageWriter.writePixel(pixel.col, pixel.row, resultingColor.getColor());
@@ -217,6 +219,11 @@ public class Render {
         }
 
     }
+
+    /**
+     * prints message when using threads
+     * @param msg string
+     */
     private synchronized void printMessage(String msg) {
         synchronized (System.out) {
             System.out.println(msg);
@@ -311,10 +318,8 @@ public class Render {
      * in class (and also used for ray tracing), and where p is a specular power. The higher the value of p, the shinier
      * the surface.
      */
-    private primitives.Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v,
-                                          int nShininess, primitives.Color ip) {
+    private primitives.Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, primitives.Color ip) {
         double p = nShininess;
-
         Vector R = l.add(n.scale(-2 * nl)); // nl must not be zero!
         double minusVR = -alignZero(R.dotProduct(v));
         if (minusVR <= 0) {
@@ -350,7 +355,7 @@ public class Render {
      * @return Ray
      */
     private Ray constructReflectedRay(Point3D pointGeo, Ray inRay, Vector n) {
-        //r = v-2.(v.n).n
+        //r = v-2*(v*n)*n
         Vector v = inRay.getDir();
         double vn = v.dotProduct(n);
         if (vn == 0) {
@@ -564,8 +569,6 @@ public class Render {
                 Vector l = lightSource.getL(pointGeo);
                 double nl = alignZero(n.dotProduct(l));
                 if (nl * nv > 0) {
-//                if (sign(nl) == sign(nv) && nl != 0 && nv != 0) {
-//                    if (unshaded(lightSource, l, n, geoPoint)) {
                     double ktr = transparency(lightSource, l, n, geoPoint);
                     if (ktr * k > MIN_CALC_COLOR_K) {
                         primitives.Color ip = lightSource.getIntensity(pointGeo).scale(ktr);

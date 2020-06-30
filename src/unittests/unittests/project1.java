@@ -29,6 +29,7 @@ public class project1 {
         Color colorPink = new Color(102, 0, 51);
         Color colorBlue = new Color(java.awt.Color.blue);
 
+
         scene.addGeometries(
                 new Sphere(colorPink, sphereMaterial, 15, new Point3D(140, -80, 500)),
                 new Sphere(colorBlue, sphereMaterial, 20, new Point3D(150, -120, 450)),

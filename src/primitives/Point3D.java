@@ -41,9 +41,6 @@ public class Point3D {
      */
     public Point3D(Point3D _p) {
         this(_p._x._coord,_p._y._coord,_p._z._coord);
-//        this._x = new Coordinate(_p.getX());
-//        this._y = new Coordinate(_p.getY());
-//        this._z = new Coordinate(_p.getZ());
     }
 
     /**
@@ -99,7 +96,7 @@ public class Point3D {
     }
 
     /**
-     * subtracts a vector feom a point3D
+     * subtracts a vector from a point3D
      *
      * @param v Vector v
      * @return Point3D

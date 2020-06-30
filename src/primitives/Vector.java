@@ -84,7 +84,7 @@ public class Vector {
      * @return a new vector
      */
     public Vector subtract(Vector _v) {
-        return new Vector(this._head.getX()._coord - _v._head.getX()._coord, this._head.getY()._coord - _v._head.getY()._coord, this._head.getZ()._coord - _v._head.getZ()._coord);
+        return new Vector(this._head._x._coord - _v._head._x._coord, this._head._y._coord - _v._head._y._coord, this._head._z._coord - _v._head._z._coord);
     }
 
 
@@ -94,7 +94,7 @@ public class Vector {
      * @return a vector
      */
     public Vector add(Vector _v) {
-        return new Vector(_v._head.getX()._coord + this._head.getX()._coord, _v._head.getY()._coord + this._head.getY()._coord, _v._head.getZ()._coord + this._head.getZ()._coord);
+        return new Vector(_v._head._x._coord + this._head._x._coord, _v._head._y._coord + this._head._y._coord, _v._head._z._coord + this._head._z._coord);
     }
 
     /**
@@ -103,7 +103,7 @@ public class Vector {
      * @return a multiplied vector
      */
     public Vector scale(double _a) {
-        return new Vector(this._head.getX()._coord * _a, this._head.getY()._coord * _a, this._head.getZ()._coord * _a);
+        return new Vector(this._head._x._coord * _a, this._head._y._coord * _a, this._head._z._coord * _a);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Vector {
      * @return a double number
      */
     public Double dotProduct(Vector _v) {
-        return (this._head.getX()._coord * _v._head.getX()._coord + this._head.getY()._coord * _v._head.getY()._coord + this._head.getZ()._coord * _v._head.getZ()._coord);
+        return (this._head._x._coord * _v._head._x._coord + this._head._y._coord * _v._head._y._coord + this._head._z._coord * _v._head._z._coord);
     }
 
     /**
@@ -121,7 +121,7 @@ public class Vector {
      * @return a vector
      */
     public Vector crossProduct(Vector _v){
-        return new Vector(this._head.getY()._coord*_v._head.getZ()._coord - this._head.getZ()._coord*_v._head.getY()._coord,this._head.getZ()._coord*_v._head.getX()._coord - this._head.getX()._coord*_v._head.getZ()._coord, this._head.getX()._coord*_v._head.getY()._coord - this._head.getY()._coord*_v._head.getX()._coord);
+        return new Vector(this._head._y._coord*_v._head._z._coord - this._head._z._coord*_v._head._y._coord,this._head._z._coord*_v._head._x._coord - this._head._x._coord*_v._head._z._coord, this._head._x._coord*_v._head._y._coord - this._head._y._coord*_v._head._x._coord);
     }
 
     /**

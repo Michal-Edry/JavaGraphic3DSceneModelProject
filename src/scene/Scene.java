@@ -123,7 +123,7 @@ public class Scene {
 
     /**
      * adds geometries to the geometry collection
-     * @param geometries
+     * @param geometries Intersectable
      */
     public void addGeometries(Intersectable... geometries) {
         _geometries.add(geometries);

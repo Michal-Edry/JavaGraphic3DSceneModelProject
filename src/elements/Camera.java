@@ -23,9 +23,9 @@ public class Camera {
 
     private int DOF = 0;
     private static Random rand = new Random();
-    private double aperture = 5d;
-    private int numOfRays = 20;
-    private double focalDistance = 100;
+    private double aperture;
+    private int numOfRays;
+    private double focalDistance;
 
     /**
      * getter for aperture
@@ -167,12 +167,14 @@ public class Camera {
         if (isZero(screenDistance)) {
             throw new IllegalArgumentException("distance cannot be 0");
         }
-
+        //calcs center point
         Point3D Pc = _p0.add(_vTo.scale(screenDistance));
 
+        //height and width of each pixel
         double Ry = screenHeight / nY;
         double Rx = screenWidth / nX;
 
+        //pixel i,j center point
         double yi = ((i - nY / 2d) * Ry + Ry / 2d);
         double xj = ((j - nX / 2d) * Rx + Rx / 2d);
 
@@ -205,11 +207,14 @@ public class Camera {
     public List<Ray> constructRayBeam(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
         List<Ray> result = new LinkedList<>();
 
+        //calcs center point
         Point3D Pc = _p0.add(_vTo.scale(screenDistance));
 
+        //height and width of each pixel
         double Ry = screenHeight / nY;
         double Rx = screenWidth / nX;
 
+        //pixel i,j center point
         double yi = ((i - nY / 2d) * Ry + Ry / 2d);
         double xj = ((j - nX / 2d) * Rx + Rx / 2d);
 
@@ -222,13 +227,14 @@ public class Camera {
             pij = pij.subtract(_vUp.scale(yi)); // Pij.add(_vUp.scale(-yi))
         }
 
-
+        //vector towards focal 'plane'
         Vector vToToFocal = pij.subtract(_p0).normalize();
         if (numOfRays == 1 || isZero(aperture)) {
             result.add(new Ray(_p0, vToToFocal));
             return result;
         }
 
+        //center ray
         Ray centerRay = new Ray(pij, vToToFocal);
         result.add(centerRay);
 
@@ -237,10 +243,10 @@ public class Camera {
 
         //calculates random rays in aperture
         for (int k = 1; k < numOfRays; k++) {
-            Point3D randPoint = new Point3D(pij);
-            double x = rand.nextDouble() * 2 - 1;
-            double y = Math.sqrt(1 - x * x);
-            double mult = (rand.nextDouble()-0.5)*aperture;
+            Point3D randPoint = new Point3D(pij); //random point
+            double x = rand.nextDouble() * 2 - 1; //random number between 0-1
+            double y = Math.sqrt(1 - x * x); //random number between 0-1
+            double mult = (rand.nextDouble()-0.5)*aperture; //to move in aperture size
             if (!isZero(x))
                 randPoint = randPoint.add(_vRight.scale(x * mult));
             if (!isZero(y))
@@ -268,9 +274,11 @@ public class Camera {
 
         Point3D Pc = _p0.add(_vTo.scale(screenDistance)); //center point
 
+        //height and width of each pixel
         double Ry = screenHeight / nY;
         double Rx = screenWidth / nX;
 
+        //pixel i,j center point
         double yi = ((i - nY / 2d) * Ry + Ry / 2d);
         double xj = ((j - nX / 2d) * Rx + Rx / 2d);
 
@@ -293,7 +301,6 @@ public class Camera {
 
         Point3D focalPoint = pij.add(vToToFocal.scale(focalDistance / _vTo.dotProduct(vToToFocal)));
 
-        //result.add(new Ray(middle, focalPoint.subtract(middle)));// adds center ray
         result.add(new Ray(middle, vToToFocal));// adds center ray
 
         if (numOfRays == 1 || isZero(aperture)) {

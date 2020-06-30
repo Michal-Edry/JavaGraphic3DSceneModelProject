@@ -14,7 +14,7 @@ public interface Intersectable {
     /**
      * inner class of GeoPoint
      */
-    public  class GeoPoint {
+    public class GeoPoint {
         Geometry _geometry;
         Point3D _point;
 

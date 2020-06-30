@@ -65,13 +65,13 @@ public class SphereTest {
             assertEquals("Wrong number of points", 2, result.size());
             if (result.get(0).getPoint().getX().get() > result.get(1).getPoint().getX().get())
                 result = List.of(result.get(1), result.get(0));
-            assertEquals("Ray crosses sphere", List.of(p1, p2), result);
+            assertEquals("Ray crosses sphere", List.of(p1, p2), List.of(result.get(0).getPoint(),result.get(1).getPoint()));
 
             // TC03: Ray starts inside the sphere (1 point)
         Ray ray = new Ray(new Point3D(1,0,0.5),new Vector(1,0,0));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts inside the sphere", new Point3D(1.8660254037844386,0,0.5),result.get(0));
+        assertEquals("Ray starts inside the sphere", new Point3D(1.8660254037844386,0,0.5),result.get(0).getPoint());
 
             // TC04: Ray starts after the sphere (0 points)
         ray = new Ray(new Point3D(2,1,1),new Vector(1,0,0));
@@ -84,7 +84,7 @@ public class SphereTest {
         ray = new Ray(new Point3D(2,0,0),new Vector(-1,-1,-1));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts at sphere and goes inside",new Point3D(1.333333333333333 ,-0.6666666666666669 ,-0.6666666666666669),result.get(0));
+        assertEquals("Ray starts at sphere and goes inside",new Point3D(1.333333333333333 ,-0.6666666666666669 ,-0.6666666666666669),result.get(0).getPoint());
 
             // TC12: Ray starts at sphere and goes outside (0 points)
         ray = new Ray(new Point3D(2,0,0),new Vector(1,1,1));
@@ -96,26 +96,26 @@ public class SphereTest {
         ray = new Ray(new Point3D(3,0,0),new Vector(-10,0,0));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 2, result.size());
-        assertEquals("Ray starts before the sphere",new Point3D(2 ,0, 0 ),result.get(0));
-        assertEquals("Ray starts before the sphere",new Point3D(0 ,0 ,0),result.get(1));
+        assertEquals("Ray starts before the sphere",new Point3D(2 ,0, 0 ),result.get(0).getPoint());
+        assertEquals("Ray starts before the sphere",new Point3D(0 ,0 ,0),result.get(1).getPoint());
 
             // TC14: Ray starts at sphere and goes inside (1 points)
         ray = new Ray(new Point3D(2,0,0),new Vector(-10,0,0));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts at sphere and goes inside",new Point3D(0 ,0, 0 ),result.get(0));
+        assertEquals("Ray starts at sphere and goes inside",new Point3D(0 ,0, 0 ),result.get(0).getPoint());
 
             // TC15: Ray starts inside (1 points)
         ray = new Ray(new Point3D(1.5,0,0),new Vector(-10,0,0));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts inside",new Point3D(0 ,0, 0 ),result.get(0));
+        assertEquals("Ray starts inside",new Point3D(0 ,0, 0 ),result.get(0).getPoint());
 
          // TC16: Ray starts at the center (1 points)
         ray = new Ray(new Point3D(1,0,0),new Vector(1,1,1));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray starts at the center",new Point3D(1.5773502691896257 ,0.5773502691896258, 0.5773502691896258),result.get(0));
+        assertEquals("Ray starts at the center",new Point3D(1.5773502691896257 ,0.5773502691896258, 0.5773502691896258),result.get(0).getPoint());
 
         // TC17: Ray starts at sphere and goes outside (0 points)
         ray = new Ray(new Point3D(0,0,0),new Vector(-10,0,0));
@@ -149,7 +149,7 @@ public class SphereTest {
         ray = new Ray(new Point3D(1.5,0,0),new Vector(0,0,1));
         result = sphere.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Ray's line is outside, ray is orthogonal to ray start to sphere's center line",new Point3D(1.5 , 0 , 0.8660254037844386),result.get(0));
+        assertEquals("Ray's line is outside, ray is orthogonal to ray start to sphere's center line",new Point3D(1.5 , 0 , 0.8660254037844386),result.get(0).getPoint());
 
         //Ray's start point on sphere
         ray = new Ray(new Point3D(2,0,0),new Vector(0,0,1));

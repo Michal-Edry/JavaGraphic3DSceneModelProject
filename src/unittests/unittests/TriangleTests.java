@@ -39,7 +39,7 @@ public class TriangleTests {
         ray = new Ray(new Point3D(-1,-3,-2),new Vector(1,3,2));
         result = triangle.findIntersections(ray);
         assertEquals("Wrong number of points", 1, result.size());
-        assertEquals("Inside triangle",new Point3D(0.16666666666666652,0.5,(double)1/3), result.get(0));
+        assertEquals("Inside triangle",new Point3D(0.16666666666666652,0.5,(double)1/3), result.get(0).getPoint());
 
         //TC02: Outside against edge (0 points)
         Triangle triangle_1 = new Triangle(new Point3D(0,0,0),new Point3D(1,0,0),new Point3D(0,1,0));
